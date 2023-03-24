@@ -1,11 +1,16 @@
 Create database ProyectoFCT;
 Use ProyectoFCT;
 drop table pacientes;
+drop table usuarios;
+drop table doctores;
+drop table horarios;
+drop table recetas;
+drop table administradores;
 
 -- Crear tabla de pacientes
 CREATE TABLE pacientes (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  dni VARCHAR(9),
+  dni VARCHAR(9) PRIMARY KEY,
   nombre VARCHAR(50),
   apellidos VARCHAR(50),
   genero ENUM('H', 'M'),
@@ -32,12 +37,15 @@ CREATE TABLE doctores (
 -- Crear tabla de administradores
 CREATE TABLE administradores (
   id INT PRIMARY KEY,
+  DNI VARCHAR(9),
   nombre VARCHAR(50),
   passwd VARCHAR(16)
 );
 
 CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
+/*Añado el campo nombre*/
+  nombre VARCHAR(50),
   tipo ENUM('paciente', 'doctor', 'administrador'),
   id_paciente INT,
   id_doctor INT,
@@ -48,9 +56,11 @@ CREATE TABLE usuarios (
   FOREIGN KEY (id_administrador) REFERENCES administradores(id)
 );
 
-
 -- Crear tabla de receta
 CREATE TABLE receta (
+/*Añado el campo id_receta y fecha_receta*/
+  id_receta INT AUTO_INCREMENT PRIMARY KEY,
+  fecha_receta date,
   medicina VARCHAR(40),
   cantidad INT,
   comentario VARCHAR(200),
