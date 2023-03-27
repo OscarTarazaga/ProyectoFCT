@@ -4,13 +4,13 @@ drop table pacientes;
 drop table usuarios;
 drop table doctores;
 drop table horarios;
-drop table recetas;
-drop table administradores;
+drop table receta;
+/*drop table administradores;*/
 
 -- Crear tabla de pacientes
 CREATE TABLE pacientes (
-  id INT AUTO_INCREMENT PRIMARY KEY,
   dni VARCHAR(9) PRIMARY KEY,
+  id INT,
   nombre VARCHAR(50),
   apellidos VARCHAR(50),
   genero ENUM('H', 'M'),
@@ -22,7 +22,8 @@ CREATE TABLE pacientes (
 
 -- Crear tabla de doctores
 CREATE TABLE doctores (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  dni VARCHAR(9) PRIMARY KEY,
+  id INT,
   nombre VARCHAR(50),
   apellidos VARCHAR(50),
   genero ENUM('H', 'M'),
@@ -34,26 +35,32 @@ CREATE TABLE doctores (
   passwd VARCHAR(16)
 );
 
+/*
+/*Matar tabla admin y pasarla a usuarios
 -- Crear tabla de administradores
 CREATE TABLE administradores (
-  id INT PRIMARY KEY,
-  DNI VARCHAR(9),
+  dni VARCHAR(9) PRIMARY KEY,
+  id INT,
   nombre VARCHAR(50),
   passwd VARCHAR(16)
 );
+*/
+
+/*
+La tabla usuarios ya contiene la antigua tabla de administradores, pues solo hay un administrador
+*/
 
 CREATE TABLE usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-/*Añado el campo nombre*/
+  dni VARCHAR(9) PRIMARY KEY,
+  dni_administrador VARCHAR(9),
   nombre VARCHAR(50),
-  tipo ENUM('paciente', 'doctor', 'administrador'),
-  id_paciente INT,
-  id_doctor INT,
-  id_administrador INT,
   passwd VARCHAR(16),
-  FOREIGN KEY (id_paciente) REFERENCES pacientes(id),
-  FOREIGN KEY (id_doctor) REFERENCES doctores(id),
-  FOREIGN KEY (id_administrador) REFERENCES administradores(id)
+  tipo ENUM('paciente', 'doctor', 'administrador'),
+  genero ENUM('H', 'M'),
+  dni_paciente VARCHAR(9),
+  dni_doctor VARCHAR(9),
+  FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
+  FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
 
 -- Crear tabla de receta
@@ -64,38 +71,47 @@ CREATE TABLE receta (
   medicina VARCHAR(40),
   cantidad INT,
   comentario VARCHAR(200),
-  id_paciente INT,
-  id_doctor INT,
-  FOREIGN KEY (id_paciente) REFERENCES pacientes(id),
-  FOREIGN KEY (id_doctor) REFERENCES doctores(id)
+  dni_paciente VARCHAR(9),
+  dni_doctor VARCHAR(9),
+  FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
+  FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
+
+/*Inserción de receta*/
+INSERT INTO receta (fecha_receta, medicina, cantidad, comentario, dni_paciente, dni_doctor)
+VALUES ('2023-03-27', 'Ibuprofeno', 20, 'Tomar una pastilla cada 8 horas', '123456789', '987654321');
 
 -- Crear tabla de horarios
 CREATE TABLE horarios (
-  id INT PRIMARY KEY,
-  id_paciente INT,
-  id_doctor INT,
+  dni VARCHAR(9) PRIMARY KEY,
+  dni_paciente VARCHAR(9),
+  dni_doctor VARCHAR(9),
   fecha DATE,
-  FOREIGN KEY (id_paciente) REFERENCES pacientes(id),
-  FOREIGN KEY (id_doctor) REFERENCES doctores(id)
+  FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
+  FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
+/*Inserción de horario*/
+INSERT INTO horarios (dni, dni_paciente, dni_doctor, fecha)
+VALUES ('123456789', '123456789', '987654321', '2023-03-28');
+/*Insercion de datos:*/
+/*Paciente*/
+INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd)
+VALUES ('123456789', 1, 'Juan', 'Perez', 'H', 30, 'Calle Falsa 123', '555-1234', 'contraseña1');
 
-/*Inserción en la tabla de pacientes*/
-INSERT INTO pacientes (id, dni, nombre, apellidos, genero, edad, direccion, telefono, passwd) 
-VALUES 
-  (1, '11111111A', 'María', 'García Pérez', 'M', 35, 'Calle Mayor, 1', '123456789', 'pass1234'),
-  (2, '22222222B', 'Juan', 'González Sánchez', 'H', 27, 'Calle Sol, 5', '987654321', 'pass5678'),
-  (3, '33333333C', 'Sofía', 'Martínez Ruiz', 'M', 42, 'Avenida de la Libertad, 10', '555666777', 'pass4321'),
-  (4, '44444444D', 'Pablo', 'Gutiérrez Fernández', 'H', 19, 'Calle Santa Clara, 8', '777888999', 'pass8765'),
-  (5, '55555555E', 'Lucía', 'López Sánchez', 'M', 56, 'Calle del Prado, 3', '111222333', 'pass1357');
+/*Doctor*/
+INSERT INTO doctores (dni, id, nombre, apellidos, genero, edad, especialidad, salario, horario_inicio, horario_fin, passwd)
+VALUES ('987654321', 1, 'Maria', 'Garcia', 'M', 40, 'Cardiología', 60000, '08:00:00', '17:00:00', 'contraseña2');
 
-/*Inserción en la tabla de doctores*/
-INSERT INTO doctores (id, nombre, apellidos, genero, edad, especialidad, salario, horario_inicio, horario_fin, passwd) 
-VALUES 
-  (1, 'Pedro', 'García Martínez', 'H', 45, 'Cardiología', 50000, '09:00:00', '14:00:00', 'pass1234'),
-  (2, 'Sara', 'González Ruiz', 'M', 32, 'Ginecología', 60000, '08:00:00', '13:00:00', 'pass5678'),
-  (3, 'Javier', 'Martínez Sánchez', 'H', 38, 'Oncología', 55000, '10:00:00', '15:00:00', 'pass4321'),
-  (4, 'Lucía', 'Gutiérrez Martínez', 'M', 50, 'Pediatría', 45000, '08:30:00', '13:30:00', 'pass8765'),
-  (5, 'Alejandro', 'López García', 'H', 41, 'Dermatología', 52000, '11:00:00', '16:00:00', 'pass1357');
+/*Administrador(TABLA USUARIOS)*/
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('11111111R', '11111111R', 'Administrador', 'admin123', 'administrador', NULL, NULL, NULL);
 
+/*Insercion en la tabla usuarios*/
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('123456789', NULL, 'Juan Perez', 'contraseña1', 'paciente', 'H', '123456789', NULL);
 
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('987654321', NULL, 'Maria Garcia', 'contraseña2', 'doctor', 'M', NULL, '987654321');
+
+/*Comprobación de las inserciones*/
+Select * from usuarios;
