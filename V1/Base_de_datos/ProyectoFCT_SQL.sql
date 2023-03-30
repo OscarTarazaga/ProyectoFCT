@@ -113,5 +113,10 @@ VALUES ('123456789', NULL, 'Juan Perez', 'contraseña1', 'paciente', 'H', '12345
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
 VALUES ('987654321', NULL, 'Maria Garcia', 'contraseña2', 'doctor', 'M', NULL, '987654321');
 
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('49269244R', NULL, 'Jose Maria Garcia', 'contraseña3', 'doctor', 'H', NULL, '49269244R');
+
 /*Comprobación de las inserciones*/
 Select * from usuarios;
+Select * from pacientes;
+Select * from doctores;

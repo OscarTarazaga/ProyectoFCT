@@ -8,7 +8,6 @@
     <title>Bienvenido doctor/a</title>
 </head>
 <body>
-    
     <div>
     <h1> Bienvenido doctor/a <!--< DEFINIR EN PHP DEPENDIENDO DEL USUARIO QUE LOGUE >--></h1>
     <h2> ¿Qué desea hacer? </h2>

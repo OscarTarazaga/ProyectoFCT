@@ -14,10 +14,12 @@
     <form>
         <input type="radio" id="horario" name="opcion" value="horario">
         <label for="horario"> Cita Médica</label><br>
+
         <input type="radio" id="PanelControl" name="opcion" value="PanelControl">
         <label for="PanelControl"> Receta médica</label><br>
-        <input type="radio" id="infopaciente" name="opcion" value="PanelControl">
-        <label for="PanelControl"> Información del usuario</label>
+
+        <input type="radio" id="infopaciente" name="opcion" value="infopaciente">
+        <label for="infopaciente"> Información del usuario</label>
     </form>
     </div>
 </body>
