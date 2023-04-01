@@ -27,6 +27,8 @@ if(isset($_POST['login'])){
 
     if(mysqli_num_rows($result) == 1){
         $row = mysqli_fetch_assoc($result);
+        $_SESSION['tipo'] = $row['tipo']; // Almacenar el tipo de usuario en una variable de sesión
+    
         if($row['tipo'] == 'paciente'){
             header('Location: /V1/paciente.php');
             exit();
@@ -40,6 +42,7 @@ if(isset($_POST['login'])){
     } else {
         echo "El usuario y/o contraseña son incorrectos.";
     }
+    
 }
 ?>
 
