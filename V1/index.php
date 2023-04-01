@@ -30,7 +30,7 @@ if(isset($_POST['login'])){
         if($row['tipo'] == 'paciente'){
             header('Location: /V1/paciente.php');
             exit();
-        } elseif($row['tipo'] == 'medico'){
+        } elseif($row['tipo'] == 'doctor'){
             header('Location: /V1/medico.php');
             exit();
         } elseif($row['tipo'] == 'administrador'){
