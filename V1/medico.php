@@ -35,11 +35,11 @@ if($result && mysqli_num_rows($result) > 0){
     $pronombre_tratamiento = ($genero_doctor == 'H') ? 'Dr.' : 'Dra.';
 }
 
-// Verificar si se ha seleccionado la opción "Revisar el horario" y redirigir al usuario a la página correspondiente
 if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
-    header('Location: medico_horario.php');
+    header('Location: medico_horario.php?dni=' . $dni_doctor);
     exit;
 }
+
 
 ?>
 
