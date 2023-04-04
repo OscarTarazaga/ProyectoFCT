@@ -35,6 +35,12 @@ if($result && mysqli_num_rows($result) > 0){
     $pronombre_tratamiento = ($genero_doctor == 'H') ? 'Dr.' : 'Dra.';
 }
 
+// Verificar si se ha seleccionado la opción "Revisar el horario" y redirigir al usuario a la página correspondiente
+if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
+    header('Location: medico_horario.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +54,7 @@ if($result && mysqli_num_rows($result) > 0){
 </head>
 <body>
     <div>
-    <h1> Bienvenido <?php echo $pronombre_tratamiento ?> <?php echo $nombre_doctor ?> </h1>
+    <h1> Bienvenido <?php echo $pronombre_tratamiento . ' ' . $nombre_doctor ?> </h1>
     <h2> ¿Qué desea hacer? </h2>
 
     <form method="post">
@@ -58,6 +64,16 @@ if($result && mysqli_num_rows($result) > 0){
         <label for="PanelControl"> Ir al panel del paciente</label>
         <select name="pacientes" id="pacientes"> 
             <option value="" disabled selected> Seleccione un paciente </option>
+            <?php
+            $query = "SELECT dni, nombre, apellidos FROM pacientes";
+            $result = mysqli_query($conexion, $query);
+
+            if($result && mysqli_num_rows($result) > 0){
+                while($row = mysqli_fetch_assoc($result)){
+                    echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
+                }
+            }
+            ?>
         </select> <br>
         <input type="submit" value="Vamos al panel">
     </form>

@@ -10,6 +10,8 @@
 <body>
 
 <?php
+session_start();
+
 $host="127.0.0.1";
 $port=3306;
 $user="root";
@@ -28,6 +30,7 @@ if(isset($_POST['login'])){
     if(mysqli_num_rows($result) == 1){
         $row = mysqli_fetch_assoc($result);
         $_SESSION['tipo'] = $row['tipo']; // Almacenar el tipo de usuario en una variable de sesión
+        $_SESSION['dni'] = $row['dni'];
     
         if($row['tipo'] == 'paciente'){
             header('Location: /V1/paciente.php');
