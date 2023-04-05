@@ -56,7 +56,7 @@ if(isset($_POST['login'])){
             <label for="DNI">DNI:</label><br>
             <input type="text" id="DNI" name="DNI" placeholder="DNI del usuario"> <br>
             <label for="passwd">Contraseña:</label><br>
-            <input type="text" id="passwd" name="passwd" placeholder="contraseña"><br><br>
+            <input type="password" id="passwd" name="passwd" placeholder="contraseña"><br><br>
             <input type="submit" name="login" value="Login">
          </form> 
     </div>
