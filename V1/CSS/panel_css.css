@@ -1,0 +1,38 @@
+body{
+    background-color: darkcyan;
+}
+
+div.aizqui{
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    height: 30%;
+    background-color: #89CFF0;
+}
+
+div.bizqui{
+    position: absolute;
+    bottom: 15px;
+    left: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    height: 30%;
+    background-color: #89CFF0;
+}
+
+div.derecha{
+    position: absolute;
+    top: 15px;
+    right: 1%;
+    left: 50%;
+    height: 90%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #89CFF0;
+  
+}
