@@ -29,9 +29,20 @@ if($result && mysqli_num_rows($result) > 0){
 }
 
 if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
-    $dni = $_POST['dni'];
-    header('Location: medico_horario.php?dni=' . $dni);
-    exit;
+    if(isset($dni_doctor) && !empty($dni_doctor)){
+        echo "<script>window.location.href='medico_horario.php?dni={$dni_doctor}';</script>";
+        exit;
+    }
+}elseif(isset($_POST['opcion']) && $_POST['opcion'] == 'PanelControl') {
+    $selectedPatient = $_POST['pacientes'];
+
+    if ($selectedPatient) {
+        $dni_doctor = $_POST['dni_doctor'];
+        header("Location: medico_panel.php?dni={$selectedPatient}&doctor={$dni_doctor}");
+        exit;
+    } else {
+        echo "<script>alert('Debe seleccionar un paciente.')</script>";
+    }
 }
 
 ?>
@@ -47,30 +58,31 @@ if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
 </head>
 <body>
     <div>
-    <h1> Bienvenido <?php echo $pronombre_tratamiento . ' ' . $nombre_doctor ?> </h1>
-    <h2> ¿Qué desea hacer? </h2>
-    <form method="post" action="medico_horario.php">
-    <input type="radio" id="horario" name="opcion" value="horario">
-    <label for="horario"> Revisar el horario</label><br>
-    <input type="hidden" name="dni" value="<?php echo $dni_doctor ?>">
-    <input type="radio" id="PanelControl" name="opcion" value="PanelControl">
-    <label for="PanelControl"> Ir al panel del paciente</label>
-    <select name="pacientes" id="pacientes"> 
-        <option value="" disabled selected> Seleccione un paciente </option>
-        <?php
-        $query = "SELECT dni, nombre, apellidos FROM pacientes";
-        $result = mysqli_query($conexion, $query);
+        <h1> Bienvenido <?php echo $pronombre_tratamiento . ' ' . $nombre_doctor ?> </h1>
+        <h2> ¿Qué desea hacer? </h2>
+        <form method="post">
+            <input type="radio" id="horario" name="opcion" value="horario">
+            <label for="horario"> Revisar el horario</label><br>
+            <input type="hidden" name="dni" value="<?php echo $dni_doctor ?>">
+            <input type="radio" id="PanelControl" name="opcion" value="PanelControl">
+            <label for="PanelControl"> Ir al panel del paciente</label>
+            <input type="hidden" name="dni_doctor" value="<?php echo $dni_doctor ?>">
+            <select name="pacientes" id="pacientes" required name="dni_paciente"> 
+                <option value="" disabled selected> Seleccione un paciente </option>
+                <?php
+                $query = "SELECT dni, nombre, apellidos FROM pacientes";
+                $result = mysqli_query($conexion, $query);
 
-        if($result && mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)){
-                echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
-            }
-        }
-        ?>
-    </select> <br>
-    <input type="hidden" name="dni_doctor" value="<?php echo $dni_doctor ?>">
-    <input type="submit" value="Vamos al panel">
-</form>
+                if($result && mysqli_num_rows($result) > 0){
+                    while($row = mysqli_fetch_assoc($result)){
+                        echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
+                    }
+                }
+                ?>
+            </select> <br>
+            <input type="hidden" name="dni_doctor" value="<?php echo $dni_doctor ?>">
+            <input type="submit" value="Vamos al panel">
+        </form>
     </div>
 </body>
 </html>

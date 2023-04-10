@@ -12,30 +12,29 @@ $password="root";
 $dbname="proyectofct";
 
 $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
-// en este if lo que hacemos es que si hay algun error con el dni o este no fue proporcionado correctamente, salte un error que no permita hacer nada
-// por otro lado, si el dni es correcto imprimira el horario del doctor asociado a ese dni
 
-if(isset($_POST['dni'])){
-    $dni = $_POST['dni'];
-
-    $query = "SELECT horario_inicio, horario_fin FROM doctores WHERE dni='$dni'";
-    $result = mysqli_query($conexion, $query);
-
-    if(mysqli_num_rows($result) == 1){
-        $row = mysqli_fetch_assoc($result);
-        $horario_inicio = $row['horario_inicio'];
-        $horario_fin = $row['horario_fin'];
-    } else {
-        echo "Error al obtener el horario del médico.";
-    }
-
-    mysqli_close($conexion);
-    
-} else {
-    echo "El campo DNI no fue proporcionado.";
+// Comprobamos si el usuario ha iniciado sesión correctamente
+if(!isset($_SESSION['dni'])){
+    header("Location: medico_login.php");
     exit;
 }
 
+// Recuperamos el dni del médico de la sesión
+$dni = $_SESSION['dni'];
+
+$query = "SELECT horario_inicio, horario_fin FROM doctores WHERE dni='$dni'";
+$result = mysqli_query($conexion, $query);
+
+if(mysqli_num_rows($result) == 1){
+    $row = mysqli_fetch_assoc($result);
+    $horario_inicio = $row['horario_inicio'];
+    $horario_fin = $row['horario_fin'];
+} else {
+    echo "Error al obtener el horario del médico.";
+    exit;
+}
+
+mysqli_close($conexion);
 ?>
 
 <!DOCTYPE html>
