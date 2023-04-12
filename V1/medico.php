@@ -44,17 +44,22 @@ if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
         exit();
     }
 // Este otro, al seleccionar el paciente y pulsar el boton del formulario, te enviará al panel donde se verá la información del paciente, también tiene una alerta con JavaScript la cual es una ventana emergente que saltará si no se elige un paciente.    
-}elseif(isset($_POST['opcion']) && $_POST['opcion'] == 'PanelControl') {
+} elseif(isset($_POST['opcion']) && $_POST['opcion'] == 'PanelControl') {
     $selectedPatient = $_POST['pacientes'];
 
     if ($selectedPatient) {
         $dni_doctor = $_POST['dni_doctor'];
-        header("Location: medico_panel.php?dni={$selectedPatient}&doctor={$dni_doctor}");
-        exit;
+        echo "<form id='form' action='medico_panel.php' method='POST'>";
+        echo "<input type='hidden' name='dni_paciente' value='{$selectedPatient}'>";
+        echo "<input type='hidden' name='dni_doctor' value='{$dni_doctor}'>";
+        echo "</form>";
+// Con esta línea lo que hacemos es enviar automáticamente la selección de un paciente al pulsar el botón.
+        echo "<script>document.getElementById('form').submit();</script>";
     } else {
         echo "<script>alert('Debe seleccionar un paciente.')</script>";
     }
 }
+
 
 ?>
 
@@ -91,6 +96,7 @@ if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
                 if($result && mysqli_num_rows($result) > 0){
                     while($row = mysqli_fetch_assoc($result)){
                         echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
+                        $dni_paciente = $row['dni'];
                     }
                 } 
                 ?>
