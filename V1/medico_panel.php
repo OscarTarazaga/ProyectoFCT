@@ -1,6 +1,7 @@
 <?php
+// Abrimos la sesión para poder usar algunos datos que usamos en medico.php
 session_start();
-
+// Abrimos la conexión a la base de datos
 $host = "127.0.0.1";
 $port = 3306;
 $user = "root";
@@ -8,9 +9,10 @@ $password = "root";
 $dbname = "proyectofct";
 
 $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
-
+// Aqui le decimos que no tenga en cuenta el dni del doctor, pues en este caso no nos hace falta
 $dni_doctor = isset($_POST['dni_doctor']) ? $_POST['dni_doctor'] : null;
-
+// Definimos las variables que almacenarán los datos del paciente
+$dni_paciente = "";
 $nombre_paciente = "";
 $apellidos_paciente = "";
 $genero_paciente = "";
@@ -18,6 +20,7 @@ $edad_paciente = "";
 $direccion_paciente = "";
 $telefono_paciente = "";
 
+//  En este if decimos que haga la consulta teniendo en cuenta el dni del paciente, si no, que salte un error donde dice que no se encontro el dni
 if (isset($_POST['dni_paciente'])) {
     $dni_paciente = $_POST['dni_paciente'];
     $query = "SELECT * FROM pacientes WHERE dni = '$dni_paciente';";
@@ -49,7 +52,7 @@ mysqli_close($conexion);
     <link rel="stylesheet" type="text/css" href="CSS/panel_css.css">
     <title>Panel de control del médico</title>
 </head>
-
+ <!--<Aquí imprimimos los datos de los pacientes teniendo en cuenta el retorno de la consulta de a la tabla pacientes>-->
 <body>
     <div class="aizqui">
         <h4> Información del paciente (Datos personales)</h4>

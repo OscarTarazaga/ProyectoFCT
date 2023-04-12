@@ -45,7 +45,7 @@ if(isset($_POST['login'])){
             exit();
         }
     } else {
-        echo "El usuario y/o contraseña son incorrectos.";
+        echo "<script>alert('El usuario y/o contraseña son incorrectos.')</script>";
     }
     
 }
