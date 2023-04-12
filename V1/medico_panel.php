@@ -54,6 +54,17 @@ mysqli_close($conexion);
         div.aizqui{
             height: 35%;
         }
+
+        div.bizqui{
+            bottom: 50px;
+            height: 40%;
+        }
+
+        .volver-btn {
+            position: absolute;
+            bottom: 0;
+            margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+        }
     </style>
     <title>Panel de control del médico</title>
 </head>
@@ -65,7 +76,7 @@ mysqli_close($conexion);
             <p>Nombre: <?php echo $nombre_paciente; ?></p>
             <p>Apellidos: <?php echo $apellidos_paciente; ?></p>
             <p>Género: <?php echo $genero_paciente; ?></p>
-            <p>Edad: <?php echo $edad_paciente; ?></p>
+            <p>Edad: <?php echo $edad_paciente; ?> años</p>
             <p>Dirección: <?php echo $direccion_paciente; ?></p>
             <p>Teléfono: <?php echo $telefono_paciente; ?></p>
         <?php } ?>
@@ -74,16 +85,19 @@ mysqli_close($conexion);
     <div class="bizqui">
         <h4> Motivo de la cita (Dolencias o para que le receten mas de un medicamento)</h4>
         <form action="" method="post">
-            <textarea name="motivo_cita" rows="8" cols="50"></textarea>
+            <textarea name="motivo_cita" rows="11" cols="66"></textarea>
         </form>
     </div>
 
     <div class="derecha">
         <h4> Receta (Receta y/o recomendaciones para el paciente)</h4>
         <form action="" method="post">
-            <textarea name="receta" rows="8" cols="50"></textarea>
+            <textarea name="receta" rows="35" cols="91"></textarea>
             <br>
             <input type="submit" value="Guardar">
+        </form>
+        <form action="medico.php "  class="volver-btn" method="Post">
+            <input type="submit" value="Volver a la seleccion">
         </form>
     </div>
 </body>

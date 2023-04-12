@@ -72,6 +72,17 @@ aparece sin borde alguno>-->
     border: none;
     }
 
+    .volver-btn {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    }
+
+    div {
+    top: 40%;
+    margin-bottom: 50px;
+    }
 
     </style>
 </head>
@@ -107,5 +118,8 @@ aparece sin borde alguno>-->
             ?>
         </table>
     </div>
+        <form action="medico.php "  class="volver-btn" method="Post">
+            <input type="submit" value="Volver a la seleccion">
+        </form>
 </body>
 </html>

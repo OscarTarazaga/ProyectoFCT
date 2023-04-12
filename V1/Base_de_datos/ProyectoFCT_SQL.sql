@@ -107,6 +107,11 @@ VALUES ('123456789', '123456789', '987654321', '2023-03-28');
 INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd)
 VALUES ('123456789', 1, 'Juan', 'Perez', 'H', 30, 'Calle Falsa 123', '555-1234', 'contraseña1');
 
+UPDATE pacientes
+SET telefono = '616397567', apellidos = 'Perez Ureña'
+WHERE dni = '123456789';
+
+
 /*Doctor*/
 INSERT INTO doctores (dni, id, nombre, apellidos, genero, edad, especialidad, salario, horario_inicio, horario_fin, passwd)
 VALUES ('987654321', 1, 'Maria', 'Garcia', 'M', 40, 'Cardiología', 60000, '08:00:00', '17:00:00', 'contraseña2');
@@ -120,7 +125,7 @@ VALUES ('11111111R', '11111111R', 'Administrador', 'admin123', 'administrador', 
 
 /*Insercion en la tabla usuarios*/
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
-VALUES ('123456789', NULL, 'Juan Perez', 'contraseña1', 'paciente', 'H', '123456789', NULL);
+VALUES ('123456789', NULL, 'Juan Perez Ureña', 'contraseña1', 'paciente', 'H', '123456789', NULL);
 
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
 VALUES ('987654321', NULL, 'Maria Garcia', 'contraseña2', 'doctor', 'M', NULL, '987654321');
