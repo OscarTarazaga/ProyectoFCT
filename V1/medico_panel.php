@@ -63,7 +63,7 @@ mysqli_close($conexion);
         .volver-btn {
             position: absolute;
             bottom: 0;
-            margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+            margin-bottom: 20px;
         }
     </style>
     <title>Panel de control del médico</title>
