@@ -15,5 +15,8 @@ div {
     margin-bottom: 50px;
 }
 
-
-  
+button[type="submit"] {
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+  }

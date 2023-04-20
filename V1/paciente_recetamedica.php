@@ -9,5 +9,9 @@
 </head>
 <body>
     <h1>Aqui puede ver su receta medica</h1>
+
+    <form action="paciente.php" class="volver-btn" method="post">
+        <input type="submit" value="Volver a la selección">
+    </form>
 </body>
 </html>

@@ -10,5 +10,9 @@
 <body>
     <h1>Eliga la hora a la que desea la consulta</h1>
     <!--<Tabla con horario disponible para elegir la cita>-->
+
+    <form action="paciente.php" class="volver-btn" method="post">
+        <input type="submit" value="Volver a la selección">
+    </form>
 </body>
 </html>
