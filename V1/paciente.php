@@ -27,7 +27,6 @@ if(isset($_POST['opcion'])) {
         exit;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
