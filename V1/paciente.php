@@ -20,10 +20,10 @@ if(isset($_POST['opcion'])) {
         header('Location: paciente_informacion.php?dni=' . $dni_paciente);
         exit;
     } elseif ($_POST['opcion'] == 'horario') {
-        header('Location: Paciente_citamedica.php');
+        header('Location: Paciente_citamedica.php?dni=' . $dni_paciente);
         exit;
     } elseif ($_POST['opcion'] == 'PanelControl') {
-        header('Location: paciente_recetamedica.php');
+        header('Location: paciente_recetamedica.php?dni=' . $dni_paciente);
         exit;
     }
 }
