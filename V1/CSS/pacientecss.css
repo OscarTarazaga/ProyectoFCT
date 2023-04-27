@@ -16,6 +16,12 @@ div {
   align-items: center;
 }
 
+input[type="checkbox"] {
+  display: block;
+  margin: auto;
+}
+
+
 h1 {
   color: white;
   text-align: center;
@@ -25,9 +31,21 @@ input[type="submit"] {
   border-radius: 5px;
 }
 
+.guardar-cita-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+}
+
 .volver-btn {
   position: absolute;
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+hr {
+  border-top: 2px solid black;
+  border-radius: 5px;
 }

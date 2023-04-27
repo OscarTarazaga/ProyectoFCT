@@ -17,7 +17,9 @@ CREATE TABLE pacientes (
   edad INT, 
   direccion VARCHAR(120),
   telefono VARCHAR(15),
-  passwd VARCHAR(16)
+  passwd VARCHAR(16),
+  dni_doctor VARCHAR(9),
+  FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
 
 -- Crear tabla de doctores
@@ -77,19 +79,25 @@ CREATE TABLE receta (
   FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
 
+/*Inserción de receta*/
+
+INSERT INTO receta (fecha_receta, medicina, cantidad, comentario, dni_paciente, dni_doctor)
+VALUES ('2023-04-28', 'Ibuprofeno', 1, 'Tomar una pastilla cada 12 horas', '123456789', '987654321');
+
+INSERT INTO receta (fecha_receta, medicina, cantidad, comentario, dni_paciente, dni_doctor)
+VALUES ('2022-11-05', 'Enantyum', 2, 'Tomar una pastilla cada 6 horas', '123456789', '987654321');
+
 CREATE TABLE cita (
 id_cita INT AUTO_INCREMENT PRIMARY KEY,
 dni_paciente VARCHAR(9),
 dni_doctor VARCHAR(9),
-fecha DATE,
+dia VARCHAR(10),
+hora TIME,
 FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
 FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
 
-/*Inserción de receta*/
-INSERT INTO receta (fecha_receta, medicina, cantidad, comentario, dni_paciente, dni_doctor)
-VALUES ('2023-03-27', 'Ibuprofeno', 20, 'Tomar una pastilla cada 8 horas', '123456789', '987654321');
-
+/*Es inutil puesto que ya tenemos una talba cita*/
 -- Crear tabla de horarios
 CREATE TABLE horarios (
   dni VARCHAR(9) PRIMARY KEY,
@@ -99,9 +107,7 @@ CREATE TABLE horarios (
   FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
   FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
-/*Inserción de horario*/
-INSERT INTO horarios (dni, dni_paciente, dni_doctor, fecha)
-VALUES ('123456789', '123456789', '987654321', '2023-03-28');
+
 /*Insercion de datos:*/
 /*Paciente*/
 INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd)
@@ -111,10 +117,9 @@ UPDATE pacientes
 SET telefono = '616397567', apellidos = 'Perez Ureña'
 WHERE dni = '123456789';
 
-
 /*Doctor*/
 INSERT INTO doctores (dni, id, nombre, apellidos, genero, edad, especialidad, salario, horario_inicio, horario_fin, passwd)
-VALUES ('987654321', 1, 'Maria', 'Garcia', 'M', 40, 'Cardiología', 60000, '08:00:00', '17:00:00', 'contraseña2');
+VALUES ('987654321', 1, 'Maria', 'Garcia', 'M', 40, 'Cardiología', 60000, '08:00:00', '14:00:00', 'contraseña2');
 
 INSERT INTO doctores (dni, id, nombre, apellidos, genero, edad, especialidad, salario, horario_inicio, horario_fin, passwd)
 VALUES ('49269244R', 1, 'Jose Maria', 'Garcia', 'H', 35, 'Cardiologia', 40000, '08:00:00', '14:00:00', 'contraseña3');
@@ -137,3 +142,12 @@ VALUES ('49269244R', NULL, 'Jose Maria Garcia', 'contraseña3', 'doctor', 'H', N
 Select * from usuarios;
 Select * from pacientes;
 Select * from doctores;
+Select * from cita;
+
+delete from cita where id_cita = 8 ;
+
+/*Asignación de paciente a un doctor*/
+ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);
+ALTER TABLE pacientes ADD FOREIGN KEY (dni_doctor) REFERENCES doctores(dni);
+
+UPDATE pacientes SET dni_doctor = '49269244R' WHERE dni = '123456789';
