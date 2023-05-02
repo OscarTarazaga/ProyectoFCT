@@ -115,6 +115,7 @@ if(isset($_POST['guardar_cita'])) {
             <button type="submit" name="guardar_cita" id="guardar-cita-btn">Guardar cita</button>
         </form>
     </div>
+    <!--Mediante el siguiente script, lo que hago es que cuando se pulse un checkbox, el resto se desactiven, es decir, que solo se pueda pulsar uno a la vez-->
     <script>
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         const guardarCitaBtn = document.getElementById('guardar-cita-btn');

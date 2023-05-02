@@ -1,5 +1,5 @@
 <?php
-// Abrimos la sesión para que los doctores al entrar en este panel, puedan seguir teniendo acceso mediante el dni introducido anteriormente
+// Abrimos la sesión para que los pacientes al entrar en este panel, puedan seguir teniendo acceso mediante el dni introducido anteriormente
 session_start();
 // Creamos la conexión con la base de datos
 $host = "127.0.0.1";
@@ -14,7 +14,7 @@ $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
 if(isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'paciente' && isset($_SESSION['dni'])){
     $dni_paciente = $_SESSION['dni'];
 }
-
+// Este if lo que controla es la opción seleccionada en este panel, para que envie también el dni_del paciente
 if(isset($_POST['opcion'])) {
     if($_POST['opcion'] == 'infopaciente') {
         header('Location: paciente_informacion.php?dni=' . $dni_paciente);
@@ -36,6 +36,7 @@ if(isset($_POST['opcion'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="CSS/pacientecss.css">
+    <!--Aqui lo unico que tenemos es el formulario el cual usando el dni del paciente nos redirige a las diferentes opciones que tenemos-->
     <title>Panel del paciente</title>
 </head>
 <body>

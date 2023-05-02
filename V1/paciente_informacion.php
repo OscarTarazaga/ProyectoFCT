@@ -34,7 +34,7 @@ if (isset($_SESSION['dni'])) {
         $direccion_paciente = $row['direccion'];
         $telefono_paciente = $row['telefono'];
     } else {
-        echo "No se encontró ningún paciente con el DNI $dni_paciente.";
+        echo "<script>alert('No se encontró ningún paciente con el DNI $dni_paciente.')</script>";
     }
 }
 
@@ -51,7 +51,7 @@ mysqli_close($conexion);
     <title>Datos Personales</title>
 </head>
 <body>
-
+    <!--Aqui lo unico que hacemos es mostrar la información del paciente, para que pueda comprobar -->
     <div>
         <h1>Datos Personales</h1>
         <p>Nombre: <?php echo $nombre_paciente; ?></p>
@@ -61,10 +61,12 @@ mysqli_close($conexion);
         <p>Dirección: <?php echo $direccion_paciente; ?></p>
         <p>Teléfono: <?php echo $telefono_paciente; ?></p>
     </div>
-    
+    <!--Este botón lo unico que hace es volver al panel de selección anterior-->
     <form action="paciente.php" class="volver-btn" method="post">
         <input type="submit" value="Volver a la selección">
     </form>
+
+    <!--Posible inserción de un botón para enviar un ticket al administrador para cambiar algun campo de los datos-->
 
 
 </body>
