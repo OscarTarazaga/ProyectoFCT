@@ -10,6 +10,14 @@ $password = "root";
 $dbname = "proyectofct";
 
 $conexion = mysqli_connect($host, $user, $password, $dbname, $port); 
+// Aqui declaro los dias de la semana para a continuacion meterlos en un array para asociar cada día con la posicion deseada
+$l="Lunes";
+$m="Martes";
+$x="Miercoles";
+$j="Jueves";
+$v="Viernes";
+
+$dias_semana = array(1 => "Lunes", 2 => "Martes", 3 => "Miercoles", 4 => "Jueves", 5 => "Viernes");
 
 if(isset($_POST['guardar_cita'])) {
     // Obtenemos la hora seleccionada
@@ -76,14 +84,14 @@ if(isset($_POST['guardar_cita'])) {
         <form action="paciente_citamedica.php" class="guardar-cita-btn" method="post">
             <table>
                 <thead>
-                    <tr>
-                        <th>Hora</th>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                    </tr>
+                <tr>
+                    <th>Hora</th>
+                    <th><?php echo $l ?></th>
+                    <th><?php echo $m ?></th>
+                    <th><?php echo $x ?></th>
+                    <th><?php echo $j ?></th>
+                    <th><?php echo $v ?></th>
+                </tr>
                 </thead>
                 <tbody>
                 <?php
@@ -101,8 +109,8 @@ if(isset($_POST['guardar_cita'])) {
                         echo "<td>$hora</td>";
 
                         for ($i = 1; $i <= 5; $i++) {
-                            echo "<td><input type='checkbox' name='horario[]' value='$hora|$i|$dia'></td>";
-                        }
+                            echo "<td><input type='checkbox' name='horario[]' value='$hora|$dias_semana[$i]|$dia'></td>";
+                        }                        
 
                         echo "</tr>";
 
