@@ -34,6 +34,19 @@ if(mysqli_num_rows($result) == 1){
     exit;
 }
 
+// Consultamos las citas asignadas al médico
+$query_citas = "SELECT cita.hora, cita.dia, pacientes.nombre, pacientes.apellidos FROM cita 
+                INNER JOIN pacientes ON cita.dni_paciente = pacientes.dni
+                WHERE cita.dni_doctor='$dni'";
+$result_citas = mysqli_query($conexion, $query_citas);
+
+
+// Creamos un array asociativo para almacenar las citas
+$citas = array();
+while ($row_citas = mysqli_fetch_assoc($result_citas)) {
+    $citas[$row_citas['dia']] = $row_citas['hora'];
+}
+
 mysqli_close($conexion);
 ?>
 
@@ -49,42 +62,7 @@ mysqli_close($conexion);
 elementos asociados al css.
 En este caso, he definido que el titulo salga en el centro del div, y el formato de la tabla, para que salga dentro de celdas, excepto la primera celda de todas, ya que esta 
 aparece sin borde alguno>-->
-    <style>
-    h1 {
-        text-align: center;
-    }
-    
-    th {
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 10px;
-    }
 
-    td {
-    padding: 3px;
-    border: 1px solid black;
-    border-radius: 10px;
-    }
-    
-    th.a {
-    border: none;
-    }
-
-    .volver-btn {
-    position: absolute;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    }
-
-    div {
-    top: 40%;
-    margin-bottom: 50px;
-    }
-
-    </style>
 </head>
 <body>
 <!--<Aquí definimos la tabla>-->
