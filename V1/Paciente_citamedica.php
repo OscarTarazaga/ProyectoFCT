@@ -38,6 +38,7 @@ if(isset($_POST['guardar_cita'])) {
     $result = mysqli_query($conexion, $query);
     $num_rows = mysqli_num_rows($result);
     
+    // En este if lo que hago es que si existe una cita programada para esa hora, salga este mensaje de error y nos permite agregar otra cita
     if ($num_rows > 0) {
         echo "<script>alert('Lo sentimos, ya hay una cita programada para el día $dia y la hora $hora. Por favor, seleccione otra hora.')</script>";
     } else {
