@@ -16,6 +16,23 @@ div {
   align-items: center;
 }
 
+.cita {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
+  background-color: #89CFF0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: 45%;
+}
+
 input[type="checkbox"] {
   display: block;
   margin: auto;

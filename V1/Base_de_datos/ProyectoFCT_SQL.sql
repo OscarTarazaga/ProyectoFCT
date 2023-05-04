@@ -144,7 +144,7 @@ Select * from pacientes;
 Select * from doctores;
 Select * from cita;
 
-delete from cita where id_cita = 8 ;
+delete from cita where id_cita = 13 ;
 
 /*Asignación de paciente a un doctor*/
 ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);
