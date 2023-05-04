@@ -1,5 +1,5 @@
 <?php
-// Abrimos la sesión para que los doctores al entrar en este panel, puedan seguir teniendo acceso mediante el dni introducido anteriormente
+// Abrimos la sesión para que los pacientes al entrar en este panel, puedan seguir teniendo acceso mediante el dni introducido anteriormente
 session_start();
 
 // Creamos la conexión con la base de datos
@@ -32,21 +32,30 @@ if(isset($_POST['guardar_cita'])) {
     $horario = explode("|", $hora);
     $dia = $horario[1];
     $hora = $horario[0];
- 
-    // Insertamos la cita en la tabla cita
-    $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$dia', '$hora')";
-    $result = mysqli_query($conexion, $query);
- 
-    if($result) {
-       echo "<script>alert('La cita ha sido guardada correctamente.')</script>";
-    } else {
-       echo "<script>alert('Error al guardar la cita.')</script>";
-    }
 
-    // Redireccionar a paciente.php al guardar la cita (!!GUARDA LOS DÍAS DEL 1 AL 5¡¡)
-    header("Location: paciente.php");
-    exit;
+    // Verificamos si ya existe una cita programada para ese día y hora
+    $query = "SELECT * FROM cita WHERE dia = '$dia' AND hora = '$hora'";
+    $result = mysqli_query($conexion, $query);
+    $num_rows = mysqli_num_rows($result);
+    
+    if ($num_rows > 0) {
+        echo "<script>alert('Lo sentimos, ya hay una cita programada para el día $dia y la hora $hora. Por favor, seleccione otra hora.')</script>";
+    } else {
+        // Insertamos la cita en la tabla cita
+        $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$dia', '$hora')";
+        $result = mysqli_query($conexion, $query);
+    
+        if($result) {
+           echo "<script>alert('La cita ha sido guardada correctamente.')</script>";
+        } else {
+           echo "<script>alert('Error al guardar la cita.')</script>";
+        }
+        // Redireccionar a paciente.php al guardar la cita (!!GUARDA LOS DÍAS DEL 1 AL 5, A NO SER QUE ESTE COGIENDO LA DECHA ACTUAL, LO CUAL SERIA RARO PERO MIRAR POR SI ACASO¡¡)
+        header("Location: paciente.php");
+        exit;
+    }
 }
+    
 
 ?>
 
