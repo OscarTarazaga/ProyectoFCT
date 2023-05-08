@@ -38,20 +38,12 @@ input[type="checkbox"] {
   margin: auto;
 }
 
-
 h1 {
   color: white;
   text-align: center;
 }
 
 input[type="submit"] {
-  border-radius: 5px;
-}
-
-.guardar-cita-btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   border-radius: 5px;
 }
 
@@ -65,4 +57,14 @@ input[type="submit"] {
 hr {
   border-top: 2px solid black;
   border-radius: 5px;
+}
+
+table {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#submit-btn {
+  display: block;
+  margin: 0 auto;
 }

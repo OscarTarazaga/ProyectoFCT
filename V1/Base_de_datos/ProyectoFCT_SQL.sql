@@ -91,7 +91,7 @@ CREATE TABLE cita (
 id_cita INT AUTO_INCREMENT PRIMARY KEY,
 dni_paciente VARCHAR(9),
 dni_doctor VARCHAR(9),
-dia VARCHAR(10),
+dia date,
 hora TIME,
 FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
 FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
