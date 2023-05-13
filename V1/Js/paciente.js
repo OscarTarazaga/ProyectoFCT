@@ -1,7 +1,15 @@
-
+function updateDate() {
+    const fechaSeleccionada = document.querySelector('#fecha_seleccionada').value;
+    if (!fechaSeleccionada) {
+        alert('Debe seleccionar una fecha y una hora');
+        return;
+    }
+    document.forms['cita-form'].submit();
+}
+/*
 function updateDate() {
     checkDate(); // llamamos a la función checkDate() antes de desactivar el evento submit
-    var fechaSeleccionada = document.getElementsByName("Fecha")[0].value;
+    var fechaSeleccionada = document.getElementById("fecha_seleccionada").value;
     var checkboxes = document.getElementsByName("horario[]");
     var horaSeleccionada;
     for (var i = 0; i < checkboxes.length; i++) {
@@ -17,19 +25,13 @@ function updateDate() {
         var dia = horaSeleccionadaSplit[1];
         var mensaje = "Cita guardada para el día " + fechaSeleccionada + " a las " + hora;
         alert(mensaje);
-        window.location.href = "paciente.php";
+        document.getElementById("submit-btn").removeAttribute("onclick");
+        document.forms[0].submit();
     } else {
-        document.getElementById("hora-imprimir").textContent = "";
+        alert("Debe seleccionar una hora");
     }
-
-    document.getElementById("fecha-imprimir").textContent = "Fecha seleccionada: " + fechaSeleccionada;
-    document.getElementById("hora-imprimir").textContent = "Hora seleccionada: " + hora + ", día: " + dia + ", fecha: " + fechaSeleccionada;
-    document.getElementById("submit-btn").disabled = true;
-    document.getElementById("fecha_seleccionada").value = fechaSeleccionada;
-    document.forms["cita-form"].submit();
 }
-
-
+*/
     function checkDate() {
         var fechaSeleccionada = document.getElementsByName("Fecha")[0].value;
         var fecha = new Date(fechaSeleccionada);
@@ -40,4 +42,5 @@ function updateDate() {
             document.getElementById("submit-btn").disabled = false;
         }
     }
+    
 //<script src="Js/paciente.js"></script>

@@ -31,18 +31,39 @@ if(isset($_POST['fecha_seleccionada'])) {
         $hora = $hora_dia[0];
         $dia = $hora_dia[1];
 
-        $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora_dia[0]"));
-
-        $query = "INSERT INTO cita (dni_paciente, dni_doctor, fecha, hora) VALUES ('$dni_paciente', '$dni_doctor', '$fecha', '$hora')";
-        mysqli_query($conexion, $query);        
+        $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
     }    
 
-    // Insertar hora y fecha seleccionada en la base de datos
-    $query = "INSERT INTO citas_seleccionadas (dni_paciente, fecha) VALUES ('$dni_paciente', '$fecha_seleccionada')";
-    mysqli_query($conexion, $query);
-}
+    // Verificar si hay una cita agendada para esa hora y día
+    $query = "SELECT * FROM cita WHERE dia = '$fecha' AND hora = '$hora' AND dni_paciente = '$dni_paciente'";
+    $result = mysqli_query($conexion, $query);
 
+    if(mysqli_num_rows($result) > 0) {
+        echo "<script>alert('Ya hay una cita agendada para esa hora y día')</script>";
+        exit();
+    } 
+
+    // Verificar si los datos a insertar son iguales a los que ya existen en la base de datos
+    $query = "SELECT * FROM cita WHERE dni_paciente = '$dni_paciente' AND dni_doctor = '$dni_doctor' AND dia = '$fecha' AND hora = '$hora'";
+    $result = mysqli_query($conexion, $query);
+
+    if(mysqli_num_rows($result) > 0) {
+        echo "<script>alert('Ya existe una cita con los mismos datos')</script>";
+        exit();
+    } 
+
+    // Insertar la cita en la base de datos
+    $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$fecha', '$hora')";
+    mysqli_query($conexion, $query);
+
+    
+    // Redirigir al usuario a la página paciente.php después de la inserción
+    $url = 'paciente.php';
+    header("Location: $url");
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head> 
@@ -58,8 +79,8 @@ if(isset($_POST['fecha_seleccionada'])) {
 
     <div class="cita">
         <form method="post" name="cita-form" action="">
-            <label for="Fecha">Seleccione la fecha de la cita:</label>
-            <input type="date" id="Fecha" name="Fecha" min="<?php echo date('Y-m-d'); ?>" onchange="checkDate()"> 
+        <label for="fecha_seleccionada">Seleccione la fecha de la cita:</label>
+        <input type="date" id="fecha_seleccionada" name="fecha_seleccionada" min="<?php echo date('Y-m-d'); ?>" onchange="checkDate()">  
 
             <table>
                 <thead>
@@ -91,8 +112,8 @@ if(isset($_POST['fecha_seleccionada'])) {
                 ?>
                 </tbody>
             </table>
-            <input type="hidden" name="fecha_seleccionada" id="fecha_seleccionada" value="<?php echo isset($_POST['Fecha']) ? $_POST['Fecha'] : ''; ?>">
-            <input type="submit" id="submit-btn" name="submit-btn" value="Seleccione la fecha" onclick="event.preventDefault(); updateDate();">
+            <input type="hidden" name="hora_seleccionada" id="hora_seleccionada" value="">
+            <button id="submit-btn" type="button" onclick="updateDate()">Guardar cita</button>
         </form>
     </div>
     <!--
@@ -102,7 +123,7 @@ if(isset($_POST['fecha_seleccionada'])) {
     <script>
         // Script para que solo se pueda tener activo un checkbox a la vez
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const seleccionarFechaBtn = document.querySelector('#seleccionar-fecha-btn');
+        const submitBtn = document.querySelector('#submit-btn');
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 checkboxes.forEach(c => {
@@ -111,7 +132,7 @@ if(isset($_POST['fecha_seleccionada'])) {
                     }
                 });
                 document.querySelector('#hora_seleccionada').value = checkbox.value;
-                seleccionarFechaBtn.disabled = false;
+                submitBtn.disabled = false;
             });
         });
     </script>

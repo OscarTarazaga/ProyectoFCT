@@ -1,3 +1,47 @@
+<?php
+// Abrimos la sesión para que el administrador al entrar en este panel, pueda seguir teniendo acceso mediante el dni introducido anteriormente
+session_start();
+// Creamos la conexión con la base de datos
+$host = "127.0.0.1";
+$port = 3306;
+$user = "root";
+$password = "root";
+$dbname = "proyectofct";
+
+$conexion = mysqli_connect($host, $user, $password, $dbname, $port); 
+
+// Aqui se define que si el tipo de usuario que intenta entrar es administrador, se almacene su dni en la variable declarada anteriormente llamada dni_admin
+if(isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'administrador' && isset($_SESSION['dni'])){
+    $dni_admin = $_SESSION['dni'];
+}
+// Este if lo que controla es la opción seleccionada en este panel, para que envie también el dni del administrador
+if(isset($_POST['opcion'])) {
+    $dni_doctor = $_POST['doctores'];
+    if($_POST['opcion'] == 'insercion_doctor') {
+        header('Location: admin_inserciondoctor.php');
+        exit;
+    } elseif ($_POST['opcion'] == 'informacion') {
+        // Verificamos si se ha seleccionado un doctor
+        if(empty($_POST['doctores'])){
+            header('Location: admin.php');
+            exit;
+        }
+        header('Location: admin_infodoctor.php?dni_doctor=' . $dni_doctor);
+        exit;
+    } elseif ($_POST['opcion'] == 'insercion_paciente') {
+        header('Location: admin_insercionpaciente.php');
+        exit;
+    } elseif ($_POST['opcion'] == 'ticket') {
+        if(empty($_POST['doctores'])){
+            header('Location: admin.php');
+            exit;
+        header('Location: admin_tickets.php?dni_paciente=' . $dni_paciente);
+        exit;
+    }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,32 +54,42 @@
 <body>
     
     <div>
-    <h1> Bienvenido Administrador <!--< DEFINIR EN PHP DEPENDIENDO DEL USUARIO QUE LOGUE >--></h1>
+    <h1> Bienvenido Administrador</h1>
     <h2> ¿Qué desea hacer? </h2>
 
-    <form>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <h3> - Opciones de referentes a los doctores </h3>
         <!--< Doctor >-->
-        <input type="radio" id="horario" name="opcion" value="horario">
-        <label for="horario"> Revisar el horario del doctor</label>
-        <select name="doctores" id="doctores"> 
-            <option value="" disabled selected> Seleccione un doctor </option>
+        <input type="radio" id="insercion_doctor" name="opcion" value="insercion_doctor">
+        <label for="insercion_doctor"> Hacer una inserción de un doctor</label>
         </select> <br>
 
         <input type="radio" id="informacion" name="opcion" value="informacion">
         <label for="informacion"> Revisar la información del doctor</label>
         <select name="doctores" id="doctores"> 
             <option value="" disabled selected> Seleccione un doctor </option>
-        </select> <br>
-        
+            <?php
+                // Aqui lo que decimos es que use la siguiente consulta y que en el select salgan los nombres de los doctores dentro de la tabla doctor, con esto, se tendrá en cuenta su dni que se usará en el panel que imprime la 
+                // información de los doctores para el administrador
+                $query = "SELECT dni, nombre, apellidos FROM doctores";
+                $result = mysqli_query($conexion, $query);
+
+                if($result && mysqli_num_rows($result) > 0){
+                    while($row = mysqli_fetch_assoc($result)){
+                        echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
+                        $dni_doctor = $row['dni'];
+                    }
+                } 
+                ?>
+            </select> 
+    <h3> - Opciones de referentes a los pacientes </h3>
         <!--< Paciente >-->
-        <input type="radio" id="horario_pacientes" name="opcion" value="horario_pacientes">
-        <label for="horario_pacientes"> Revisar el horario del paciente</label>
-        <select name="pacientes" id="pacientes"> 
-            <option value="" disabled selected> Seleccione un paciente </option>
+        <input type="radio" id="insercion_paciente" name="opcion" value="insercion_paciente">
+        <label for="insercion_paciente"> Hacer una inserción de un paciente</label>
         </select> <br>
 
-        <input type="radio" id="informacion_pacientes" name="opcion" value="informacion_pacientes">
-        <label for="informacion_pacientes"> Revisar la información del paciente</label>
+        <input type="radio" id="ticket" name="opcion" value="ticket">
+        <label for="ticket"> Tickets de los pacientes</label>
         <select name="pacientes" id="pacientes"> 
             <option value="" disabled selected> Seleccione un paciente </option>
         </select> <br>

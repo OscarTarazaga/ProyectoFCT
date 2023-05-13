@@ -17,13 +17,13 @@ if(isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'paciente' && isset($_SESSIO
 // Este if lo que controla es la opción seleccionada en este panel, para que envie también el dni_del paciente
 if(isset($_POST['opcion'])) {
     if($_POST['opcion'] == 'infopaciente') {
-        header('Location: paciente_informacion.php?dni=' . $dni_paciente);
+        header('Location: paciente_informacion.php');
         exit;
     } elseif ($_POST['opcion'] == 'horario') {
-        header('Location: Paciente_citamedica.php?dni=' . $dni_paciente);
+        header('Location: Paciente_citamedica.php');
         exit;
     } elseif ($_POST['opcion'] == 'PanelControl') {
-        header('Location: paciente_recetamedica.php?dni=' . $dni_paciente);
+        header('Location: paciente_recetamedica.php');
         exit;
     }
 }
