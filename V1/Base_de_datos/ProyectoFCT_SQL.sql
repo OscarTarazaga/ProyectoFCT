@@ -135,10 +135,14 @@ VALUES ('49269244R', 1, 'Jose Maria', 'Garcia', 'H', 35, 'Cardiologia', 40000, '
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
 VALUES ('11111111R', '11111111R', 'Administrador', 'admin123', 'administrador', NULL, NULL, NULL);
 
-/*Insercion en la tabla usuarios*/
+/*Insercion en la tabla usuarios (PACIENTES)*/
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
 VALUES ('123456789', NULL, 'Juan Perez Ureña', 'contraseña1', 'paciente', 'H', '123456789', NULL);
 
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('19547349J', '2', 'Leire', 'contraseña', 'paciente', 'M', '49269244R', NULL);
+
+/*Insercion en la tabla usuarios (DOCTORES)*/
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
 VALUES ('987654321', NULL, 'Maria Garcia', 'contraseña2', 'doctor', 'M', NULL, '987654321');
 
@@ -152,8 +156,11 @@ Select * from doctores;
 Select * from cita;
 Select * from tickets;
 
+update pacientes set apellidos="Pérez Ureña" where dni="123456789";
+
 delete from doctores where id = 2;
 delete from cita where id_cita = 55;
+delete from tickets where id_ticket = 2;
 
 /*Asignación de paciente a un doctor*/
 ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);

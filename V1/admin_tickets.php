@@ -27,7 +27,7 @@ $telefono_paciente = "";
 $contraseña = "";
 $dni_doctor = "";
 
-//  En este if decimos que haga la consulta teniendo en cuenta el dni del paciente, si no, que salte un error donde dice que no se encontró el dni
+// En este if decimos que haga la consulta teniendo en cuenta el dni del paciente, si no, que salte un error donde dice que no se encontró el dni
 if (isset($_GET['paciente'])) {
     $dni_paciente = $_GET['paciente'];
     $query = "SELECT * FROM pacientes WHERE dni = '$dni_paciente'";
@@ -43,7 +43,7 @@ if (isset($_GET['paciente'])) {
         $edad_paciente = $row['edad'];
         $direccion_paciente = $row['direccion'];
         $telefono_paciente = $row['telefono'];
-        $contraseña= $row['passwd'];
+        $contraseña = $row['passwd'];
         $dni_doctor = $row['dni_doctor'];
     } else {
         echo "No se encontró ningún paciente con el DNI $dni_paciente.";
@@ -126,8 +126,8 @@ if (isset($dni_paciente)) {
         }
     }
 }
-        // Cerrar la conexión a la base de datos
-        mysqli_close($conexion);
+// Cerrar la conexión a la base de datos
+mysqli_close($conexion);
 ?>
 
 <!DOCTYPE html>
@@ -175,41 +175,40 @@ if (isset($dni_paciente)) {
     <form action="admin_tickets.php" method="post">
 
         <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" maxlength="9"><br>
+        <input type="text" id="dni" name="dni" maxlength="9" value="<?php echo $dni_paciente_upda; ?>"><br>
 
         <label for="id">ID:</label>
-        <input type="number" id="id" name="id"><br>
+        <input type="number" id="id" name="id" value="<?php echo $id_upda; ?>"><br>
 
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre"><br>
+        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre_paciente_upda; ?>"><br>
 
         <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" name="apellidos"><br>
+        <input type="text" id="apellidos" name="apellidos" value="<?php echo $apellidos_paciente_upda; ?>"><br>
 
         <label for="genero">Género:</label>
         <select id="genero" name="genero">
-            <option value="H">Hombre</option>
-            <option value="M">Mujer</option>
+            <option value="H" <?php if ($genero_paciente_upda == "H") { echo "selected"; } ?>>Hombre</option>
+            <option value="M" <?php if ($genero_paciente_upda == "M") { echo "selected"; } ?>>Mujer</option>
         </select><br>
 
         <label for="edad">Edad:</label>
-        <input type="number" id="edad" name="edad"><br>
+        <input type="number" id="edad" name="edad" value="<?php echo $edad_upda; ?>"><br>
 
         <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion"><br>
+        <input type="text" id="direccion" name="direccion" value="<?php echo $direccion_upda; ?>"><br>
 
         <label for="telefono">Teléfono:</label>
-        <input type="number" id="telefono" name="telefono"><br>
+        <input type="number" id="telefono" name="telefono" value="<?php echo $telefono_upda; ?>"><br>
 
         <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" maxlength="16"><br>
+        <input type="password" id="contrasena" name="contrasena" value="<?php echo $contraseña_upda; ?>"><br>
 
-        <label for="dni_doctor">Doctor:</label>
-        <input type="text" id="doctores" name="dni_doctor"><br>
+        <label for="dni_doctor">DNI del Doctor:</label>
+        <input type="text" id="dni_doctor" name="dni_doctor" maxlength="9" value="<?php echo $dni_doctor_upda; ?>"><br>
 
-        <input type="submit" name="enviar" value="Enviar"><br>
+        <input type="submit" name="enviar" value="Actualizar">
     </form>
     </div>
-
 </body>
 </html>

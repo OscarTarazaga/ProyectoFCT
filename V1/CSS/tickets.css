@@ -20,7 +20,7 @@ button[type="submit"] {
 
 .medio{
     position: absolute;
-    top: 95px;
+    top: 200px;
     left: 50%;
     transform: translate(-50%, -50%);
     border: 2px solid #ccc;
