@@ -38,6 +38,21 @@ if (isset($_SESSION['dni'])) {
     }
 }
 
+// Manejar el envío del formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificar si se envió un mensaje
+    if (isset($_POST['mensaje'])) {
+        $mensaje = $_POST['mensaje'];
+
+        // Insertar el ticket en la tabla
+        $query = "INSERT INTO tickets (texto, dni_paciente) VALUES ('$mensaje', '$dni_paciente');";
+        mysqli_query($conexion, $query);
+
+        // Mostrar mensaje de éxito
+        echo "<script>alert('El mensaje ha sido enviado correctamente.')</script>";
+    }
+}
+
 mysqli_close($conexion);
 ?>
 
@@ -68,6 +83,13 @@ mysqli_close($conexion);
 
     <!--Posible inserción de un botón para enviar un ticket al administrador para cambiar algun campo de los datos-->
 
-
+    <div class="segundo">
+        <h2>Enviar mensaje al administrador:</h2>
+        <form action="paciente_informacion.php" method="post">
+            <textarea name="mensaje" rows="4" cols="50" maxlength="300" placeholder="Escribe tu mensaje aquí..." required></textarea>
+            <br>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
 </body>
 </html>

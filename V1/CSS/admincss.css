@@ -19,6 +19,14 @@ button[type="submit"] {
     justify-content: center;
 }
 
+.izquierda{
+    float: left;
+}
+
+.derecha{
+    float: right;
+}
+
 .volver-btn {
     position: absolute;
     left: 50%;

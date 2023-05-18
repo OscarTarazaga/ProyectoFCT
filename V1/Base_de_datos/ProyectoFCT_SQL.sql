@@ -97,6 +97,13 @@ FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
 FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
 
+CREATE TABLE tickets (
+id_ticket INT AUTO_INCREMENT PRIMARY KEY,
+texto VARCHAR(300),
+dni_paciente VARCHAR(9),
+FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni)
+);
+
 /*Es inutil puesto que ya tenemos una talba cita*/
 -- Crear tabla de horarios
 CREATE TABLE horarios (
@@ -143,8 +150,10 @@ Select * from usuarios;
 Select * from pacientes;
 Select * from doctores;
 Select * from cita;
+Select * from tickets;
 
-delete from cita where id_cita = 28;
+delete from doctores where id = 2;
+delete from cita where id_cita = 55;
 
 /*Asignación de paciente a un doctor*/
 ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);

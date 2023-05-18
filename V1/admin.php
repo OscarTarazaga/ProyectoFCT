@@ -14,30 +14,33 @@ $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
 if(isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'administrador' && isset($_SESSION['dni'])){
     $dni_admin = $_SESSION['dni'];
 }
-// Este if lo que controla es la opción seleccionada en este panel, para que envie también el dni del administrador
-if(isset($_POST['opcion'])) {
-    $dni_doctor = $_POST['doctores'];
-    if($_POST['opcion'] == 'insercion_doctor') {
+
+// Este if lo que controla es la opción seleccionada en este panel, para que envíe también el dni del administrador
+if (isset($_POST['opcion'])) {
+    if ($_POST['opcion'] == 'insercion_doctor') {
         header('Location: admin_inserciondoctor.php');
         exit;
     } elseif ($_POST['opcion'] == 'informacion') {
         // Verificamos si se ha seleccionado un doctor
-        if(empty($_POST['doctores'])){
+        if (empty($_POST['doctores'])) {
             header('Location: admin.php');
             exit;
         }
+        $dni_doctor = $_POST['doctores'];
         header('Location: admin_infodoctor.php?dni_doctor=' . $dni_doctor);
         exit;
     } elseif ($_POST['opcion'] == 'insercion_paciente') {
         header('Location: admin_insercionpaciente.php');
         exit;
     } elseif ($_POST['opcion'] == 'ticket') {
-        if(empty($_POST['doctores'])){
+        // Verificamos si se ha seleccionado un paciente
+        if (empty($_POST['paciente'])) {
             header('Location: admin.php');
             exit;
-        header('Location: admin_tickets.php?dni_paciente=' . $dni_paciente);
+        }
+        $dni_paciente = $_POST['paciente'];
+        header('Location: admin_tickets.php?paciente=' . $dni_paciente);
         exit;
-    }
     }
 }
 ?>
@@ -49,7 +52,7 @@ if(isset($_POST['opcion'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="CSS/admincss.css">
-    <title>Bienvenido doctor/a</title>
+    <title>Bienvenido administrador</title>
 </head>
 <body>
     
@@ -80,19 +83,33 @@ if(isset($_POST['opcion'])) {
                         $dni_doctor = $row['dni'];
                     }
                 } 
-                ?>
-            </select> 
+            ?>
+        </select> 
     <h3> - Opciones de referentes a los pacientes </h3>
         <!--< Paciente >-->
         <input type="radio" id="insercion_paciente" name="opcion" value="insercion_paciente">
-        <label for="insercion_paciente"> Hacer una inserción de un paciente</label>
-        </select> <br>
+        <label for="insercion_paciente"> Hacer una inserción de un paciente</label><br>
 
         <input type="radio" id="ticket" name="opcion" value="ticket">
         <label for="ticket"> Tickets de los pacientes</label>
-        <select name="pacientes" id="pacientes"> 
-            <option value="" disabled selected> Seleccione un paciente </option>
-        </select> <br>
+        <!-- selector del paciente en el formulario -->
+        <select name="paciente" id="paciente">
+            <option value="" disabled selected>Seleccione un paciente</option>
+            <?php
+            // Consulta modificada para filtrar solo los pacientes que hayan enviado un ticket
+            $query = "SELECT p.dni, p.nombre, p.apellidos 
+                    FROM pacientes p
+                    INNER JOIN tickets t ON p.dni = t.dni_paciente";
+            $result = mysqli_query($conexion, $query);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<option value="' . $row['dni'] . '">' . $row['nombre'] . ' ' . $row['apellidos'] . '</option>';
+                    $dni_paciente = $row['dni'];
+                }
+            }
+            ?>
+        </select><br>
 
         <input type="submit" value="Vamos al panel">
     </form>
