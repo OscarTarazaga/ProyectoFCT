@@ -84,7 +84,7 @@ if (isset($dni_paciente)) {
             $contraseña_upda = $_POST["contrasena"];
             $dni_doctor_upda = $_POST["dni_doctor"];
     
-            // Verificar si el dni_doctor existe en la tabla doctores
+            // Verificar si el dni_doctor existe en la tabla doctores, esto lo hacemos usando la variable stmt, para poder hacer statements para la base de datos
             $consulta_doctor = "SELECT dni FROM doctores WHERE dni = ?";
             $stmt = mysqli_prepare($conexion, $consulta_doctor);
             mysqli_stmt_bind_param($stmt, "s", $dni_doctor_upda);
@@ -107,8 +107,9 @@ if (isset($dni_paciente)) {
                     $consulta_actualizar = "UPDATE pacientes SET id = ?, nombre = ?, apellidos = ?, genero = ?, edad = ?, direccion = ?, telefono = ?, passwd = ?, dni_doctor = ? WHERE dni = ?";
     
                     // Ejecutar la consulta SQL de actualización
+                    // Aqui usamos el "isssisssss" para decirle a la consulta que tipo de dato debe esterar, siendo i "Int" y s "String"
                     $stmt = mysqli_prepare($conexion, $consulta_actualizar);
-                    mysqli_stmt_bind_param($stmt, "isisisssss", $id_upda, $nombre_paciente_upda, $apellidos_paciente_upda, $genero_paciente_upda, $edad_upda, $direccion_upda, $telefono_upda, $contraseña_upda, $dni_doctor_upda, $dni_paciente_upda);
+                    mysqli_stmt_bind_param($stmt, "isssisssss", $id_upda, $nombre_paciente_upda, $apellidos_paciente_upda, $genero_paciente_upda, $edad_upda, $direccion_upda, $telefono_upda, $contraseña_upda, $dni_doctor_upda, $dni_paciente_upda);
     
                     if (mysqli_stmt_execute($stmt)) {
                         echo "<script>alert('Registro actualizado correctamente.')</script>";
@@ -140,6 +141,7 @@ mysqli_close($conexion);
     <title>Tickets</title>
 </head>
 <body>
+    <!-- Aqui tenemos la información del paciente -->
     <div class="izquierda">
         <h4> Información del paciente (Datos personales)</h4>
         <?php if (isset($nombre_paciente)) { ?>
@@ -155,7 +157,7 @@ mysqli_close($conexion);
             <p>DNI del Doctor: <?php echo $dni_doctor; ?></p>
         <?php } ?>
     </div>
-
+<!-- Aqui tenemos el ticket del paciente -->
     <div class="medio">
         <?php if (isset($tickets)) { ?>
             <h4>Información de los tickets:</h4>
@@ -169,7 +171,7 @@ mysqli_close($conexion);
             <input type="submit" value="Volver a la selección">
         </form>
     </div>
-
+<!-- Aqui tenemos el formulario para actualizar los valores del paciente -->
     <div class="derecha">
     <h4> Insertar un paciente: </h4>
     <form action="admin_tickets.php" method="post">
