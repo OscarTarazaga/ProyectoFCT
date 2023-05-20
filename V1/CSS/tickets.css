@@ -1,6 +1,9 @@
-body{
+body {
     background-color: darkcyan;
-}
+    background-image: url('ppaper.jpg');
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+  }
 
 
 button[type="submit"] {
@@ -15,10 +18,10 @@ button[type="submit"] {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
-    background-color: #89CFF0;
-}
+    background-image: linear-gradient(to right, #89CFF0, #A166B8);
+  }  
 
-.medio{
+.medio {
     position: absolute;
     top: 200px;
     left: 50%;
@@ -27,18 +30,21 @@ button[type="submit"] {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
-    background-color: #89CFF0;
+    background-image: linear-gradient(to bottom, #89CFF0, #F089B4);
   }
+  
 
-.derecha{
+  .derecha {
     float: right;
     margin-left: 20px;
     border: 2px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
-    background-color: #89CFF0;
-}
+    background-image: linear-gradient(to left, #89CFF0, #9469C9);
+  }
+  
+  
 
 .volver-btn {
     position: absolute;

@@ -57,6 +57,7 @@ if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
         echo "<script>document.getElementById('form').submit();</script>";
     } else {
         echo "<script>alert('Debe seleccionar un paciente.')</script>";
+        header('Location: /V1/medico.php');
     }
 }
 

@@ -1,8 +1,11 @@
-body{
+body {
     background-color: darkcyan;
-}
+    background-image: url('ppaper.jpg');
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+  }
 
-div.aizqui{
+div.aizqui {
     position: absolute;
     top: 15px;
     left: 10px;
@@ -10,10 +13,11 @@ div.aizqui{
     border-radius: 10px;
     padding: 20px;
     height: 35%;
-    background-color: #89CFF0;
-}
+    background-image: linear-gradient(to bottom, #89CFF0, #9EAFF0);
+  }
+  
 
-div.bizqui{
+div.bizqui {
     position: absolute;
     bottom: 15px;
     left: 10px;
@@ -21,10 +25,11 @@ div.bizqui{
     border-radius: 10px;
     padding: 20px;
     height: 30%;
-    background-color: #89CFF0;
+    background-image: linear-gradient(to top, #89CFF0, #F0A189);
 }
+  
 
-div.derecha{
+div.derecha {
     position: absolute;
     top: 15px;
     right: 1%;
@@ -33,6 +38,6 @@ div.derecha{
     border: 2px solid black;
     border-radius: 10px;
     padding: 20px;
-    background-color: #89CFF0;
+    background-image: linear-gradient(to right, #89CFF0, #B189F0);
+  }
   
-}

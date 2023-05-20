@@ -32,6 +32,15 @@ BEGIN
   WHERE dni_paciente = OLD.dni;
 END;
 
+DELIMITER //
+CREATE TRIGGER insertar_usuario AFTER INSERT ON pacientes
+FOR EACH ROW
+BEGIN
+    INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+    VALUES (NEW.dni, NULL, NEW.nombre, NEW.passwd, 'paciente', NEW.genero, NEW.dni, NEW.dni_doctor);
+END //
+
+DELIMITER ;
 
 /*DELIMITER //
 drop trigger tr_insertar_paciente;*/

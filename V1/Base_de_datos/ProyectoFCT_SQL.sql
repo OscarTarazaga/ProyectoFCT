@@ -120,6 +120,9 @@ CREATE TABLE horarios (
 INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd)
 VALUES ('123456789', 1, 'Juan', 'Perez', 'H', 30, 'Calle Falsa 123', '555-1234', 'contraseña1');
 
+INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd, dni_doctor)
+VALUES ('343536373', 122, 'Prueba', 'González', 'H', 30, 'Calle Principal 123', '1234567890', 'micontraseña', '987654321');
+
 UPDATE pacientes
 SET telefono = '616397567', apellidos = 'Perez Ureña'
 WHERE dni = '123456789';
@@ -140,7 +143,10 @@ INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_
 VALUES ('123456789', NULL, 'Juan Perez Ureña', 'contraseña1', 'paciente', 'H', '123456789', NULL);
 
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
-VALUES ('19547349J', '2', 'Leire', 'contraseña', 'paciente', 'M', '49269244R', NULL);
+VALUES ('19547349J', NULL, 'Leire', 'contraseña1', 'paciente', 'M', '123456789', NULL);
+
+INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
+VALUES ('19547349J', NULL, 'Leire', 'contraseña', 'paciente', 'M', '19547349J', NULL);
 
 /*Insercion en la tabla usuarios (DOCTORES)*/
 INSERT INTO usuarios (dni, dni_administrador, nombre, passwd, tipo, genero, dni_paciente, dni_doctor)
@@ -155,12 +161,13 @@ Select * from pacientes;
 Select * from doctores;
 Select * from cita;
 Select * from tickets;
+describe tickets;
 
 update pacientes set apellidos="Pérez Ureña" where dni="123456789";
 
 delete from doctores where id = 2;
 delete from cita where id_cita = 55;
-delete from tickets where id_ticket = 2;
+delete from tickets where id_ticket = 3;
 
 /*Asignación de paciente a un doctor*/
 ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);
