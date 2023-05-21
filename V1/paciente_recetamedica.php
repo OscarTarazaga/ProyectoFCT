@@ -24,7 +24,7 @@ $result = null;
 // Definimos que si el dni del paciente es igual al de la sesión, que se seleccionen los datos del paciente para imprimirlos mediante el siguiente if
 if (isset($_SESSION['dni'])) {
     $dni_paciente = $_SESSION['dni'];
-    $query = "SELECT fecha_receta, medicina, cantidad, comentario FROM receta WHERE dni_paciente = '$dni_paciente';";
+    $query = "SELECT fecha_receta, comentario FROM receta WHERE dni_paciente = '$dni_paciente';";
     $result = mysqli_query($conexion, $query);
 }
 
@@ -33,13 +33,9 @@ if ($result && mysqli_num_rows($result) > 0) {
     echo "<h1>Receta medica</h1>";
     while ($row = mysqli_fetch_array($result)) {
         $fecha_receta = $row['fecha_receta'];
-        $medicina = $row['medicina'];
-        $cantidad = $row['cantidad'];
         $comentario = $row['comentario'];
         echo "<p>Fecha de la receta: $fecha_receta</p>";
-        echo "<p>Medicamento a tomar: $medicina</p>";
-        echo "<p>Cantidad: $cantidad</p>";
-        echo "<p>Comentario del doctor: $comentario</p>";
+        echo "<p>Receta: $comentario</p>";
         echo "<hr>";
     }
     echo "</div>";

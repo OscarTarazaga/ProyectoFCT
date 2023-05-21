@@ -177,37 +177,37 @@ mysqli_close($conexion);
     <form action="admin_tickets.php" method="post">
 
         <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" maxlength="9" value="<?php echo $dni_paciente_upda; ?>"><br>
+        <input type="text" id="dni" name="dni" maxlength="9" value="<?php echo $dni_paciente; ?>"><br>
 
         <label for="id">ID:</label>
-        <input type="number" id="id" name="id" value="<?php echo $id_upda; ?>"><br>
+        <input type="number" id="id" name="id" value="<?php echo $id; ?>"><br>
 
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre_paciente_upda; ?>"><br>
+        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre_paciente; ?>"><br>
 
         <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" name="apellidos" value="<?php echo $apellidos_paciente_upda; ?>"><br>
+        <input type="text" id="apellidos" name="apellidos" value="<?php echo $apellidos_paciente; ?>"><br>
 
         <label for="genero">Género:</label>
         <select id="genero" name="genero">
-            <option value="H" <?php if ($genero_paciente_upda == "H") { echo "selected"; } ?>>Hombre</option>
-            <option value="M" <?php if ($genero_paciente_upda == "M") { echo "selected"; } ?>>Mujer</option>
+            <option value="H" <?php if ($genero_paciente == "H") { echo "selected"; } ?>>Hombre</option>
+            <option value="M" <?php if ($genero_paciente == "M") { echo "selected"; } ?>>Mujer</option>
         </select><br>
 
         <label for="edad">Edad:</label>
-        <input type="number" id="edad" name="edad" value="<?php echo $edad_upda; ?>"><br>
+        <input type="number" id="edad" name="edad" value="<?php echo $edad_paciente; ?>"><br>
 
         <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" value="<?php echo $direccion_upda; ?>"><br>
+        <input type="text" id="direccion" name="direccion" value="<?php echo $direccion_paciente; ?>"><br>
 
         <label for="telefono">Teléfono:</label>
-        <input type="number" id="telefono" name="telefono" value="<?php echo $telefono_upda; ?>"><br>
+        <input type="number" id="telefono" name="telefono" value="<?php echo $telefono_paciente; ?>"><br>
 
         <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" value="<?php echo $contraseña_upda; ?>"><br>
+        <input type="password" id="contrasena" name="contrasena" value="<?php echo $contraseña; ?>"><br>
 
         <label for="dni_doctor">DNI del Doctor:</label>
-        <input type="text" id="dni_doctor" name="dni_doctor" maxlength="9" value="<?php echo $dni_doctor_upda; ?>"><br>
+        <input type="text" id="dni_doctor" name="dni_doctor" maxlength="9" value="<?php echo $dni_doctor; ?>"><br>
 
         <input type="submit" name="enviar" value="Actualizar">
     </form>
