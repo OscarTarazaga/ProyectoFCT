@@ -1,7 +1,5 @@
 <?php
-// Abrimos la sesión para poder usar algunos datos que usamos en medico.php
 session_start();
-// Abrimos la conexión a la base de datos
 $host = "127.0.0.1";
 $port = 3306;
 $user = "root";
@@ -9,21 +7,18 @@ $password = "root";
 $dbname = "proyectofct";
 
 $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
-// Aqui le decimos que no tenga en cuenta el dni del doctor, pues en este caso no nos hace falta
-$dni_doctor = isset($_POST['dni_doctor']) ? $_POST['dni_doctor'] : null;
-// Definimos las variables que almacenarán los datos del paciente
-$dni_paciente = "";
+
+$dni_paciente = isset($_POST['dni_paciente']) ? $_POST['dni_paciente'] : null;
 $nombre_paciente = "";
 $apellidos_paciente = "";
 $genero_paciente = "";
 $edad_paciente = "";
 $direccion_paciente = "";
 $telefono_paciente = "";
+$dni_doctor = isset($_SESSION['dni_doctor']) ? $_SESSION['dni_doctor'] : null;
 
-//  En este if decimos que haga la consulta teniendo en cuenta el dni del paciente, si no, que salte un error donde dice que no se encontro el dni
-if (isset($_POST['dni_paciente'])) {
-    $dni_paciente = $_POST['dni_paciente'];
-    $query = "SELECT * FROM pacientes WHERE dni = '$dni_paciente';";
+if (!empty($dni_paciente)) {
+    $query = "SELECT * FROM pacientes WHERE dni = '$dni_paciente'";
     $result = mysqli_query($conexion, $query);
 
     if (mysqli_num_rows($result) > 0) {
@@ -34,9 +29,27 @@ if (isset($_POST['dni_paciente'])) {
         $edad_paciente = $row['edad'];
         $direccion_paciente = $row['direccion'];
         $telefono_paciente = $row['telefono'];
+        $dni_doctor = $row['dni_doctor'];
     } else {
         echo "No se encontró ningún paciente con el DNI $dni_paciente.";
     }
+}
+
+if (isset($_POST['guardar'], $_POST['receta'], $_SESSION['dni_doctor'])) {
+    $receta = $_POST['receta'];
+    $dni_doctor = $_SESSION['dni_doctor'];
+
+    $fecha_actual = date("Y-m-d");
+
+    // Utilizar sentencias preparadas
+    $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, ?, ?, ?)";
+    $statement = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($statement, "ssss", $fecha_actual, $receta, $dni_paciente, $dni_doctor);
+    mysqli_stmt_execute($statement);
+
+    // Redireccionar a medico.php
+    header("Location: medico.php");
+    exit();
 }
 
 mysqli_close($conexion);
@@ -51,11 +64,11 @@ mysqli_close($conexion);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="CSS/panel_css.css">
     <style>
-        div.aizqui{
-            height: 35%;
+        div.aizqui {
+            height: 37%;
         }
 
-        div.bizqui{
+        div.bizqui {
             bottom: 50px;
             height: 40%;
         }
@@ -68,38 +81,32 @@ mysqli_close($conexion);
     </style>
     <title>Panel de control del médico</title>
 </head>
- <!--<Aquí imprimimos los datos de los pacientes teniendo en cuenta el retorno de la consulta de a la tabla pacientes>-->
+
 <body>
     <div class="aizqui">
         <h4> Información del paciente (Datos personales)</h4>
-        <?php if (isset($nombre_paciente)) { ?>
+        <?php if (!empty($nombre_paciente)) { ?>
             <p>Nombre: <?php echo $nombre_paciente; ?></p>
             <p>Apellidos: <?php echo $apellidos_paciente; ?></p>
             <p>Género: <?php echo $genero_paciente; ?></p>
             <p>Edad: <?php echo $edad_paciente; ?> años</p>
             <p>Dirección: <?php echo $direccion_paciente; ?></p>
             <p>Teléfono: <?php echo $telefono_paciente; ?></p>
+            <p>DNI del doctor: <?php echo $dni_doctor; ?> </p>
         <?php } ?>
-    </div>
-
-    <div class="bizqui">
-        <h4> Motivo de la cita (Dolencias o para que le receten mas de un medicamento)</h4>
-        <form action="" method="post">
-            <textarea name="motivo_cita" rows="11" cols="66"></textarea>
-        </form>
     </div>
 
     <div class="derecha">
         <h4> Receta (Receta y/o recomendaciones para el paciente)</h4>
-        <form action="" method="post">
+        <form action="medico.php" method="post">
             <textarea name="receta" rows="35" cols="91"></textarea>
             <br>
+            <input type="hidden" name="guardar" value="1">
             <input type="submit" value="Guardar">
         </form>
-        <form action="medico.php "  class="volver-btn" method="Post">
-            <input type="submit" value="Volver a la seleccion">
+        <form action="medico.php" class="volver-btn" method="post">
+            <input type="submit" value="Volver a la selección">
         </form>
     </div>
 </body>
-
 </html>
