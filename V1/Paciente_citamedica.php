@@ -7,7 +7,7 @@ $user = "root";
 $password = "root";
 $dbname = "proyectofct";
 
-$conexion = mysqli_connect($host, $user, $password, $dbname, $port); 
+$conexion = mysqli_connect($host, $user, $password, $dbname, $port);
 
 $dni_paciente = $_SESSION['dni'];
 
@@ -16,7 +16,7 @@ $result = mysqli_query($conexion, $query);
 $row = mysqli_fetch_assoc($result);
 $dni_doctor = $row['dni_doctor'];
 
-if(isset($_POST['fecha_seleccionada'])) {
+if (isset($_POST['fecha_seleccionada'])) {
     $fecha_seleccionada = $_POST['fecha_seleccionada'];
     $horarios = $_POST['horario'];
 
@@ -32,41 +32,53 @@ if(isset($_POST['fecha_seleccionada'])) {
         $dia = $hora_dia[1];
 
         $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
-    }    
 
-    // Verificar si hay una cita agendada para esa hora y día
-    $query = "SELECT * FROM cita WHERE dia = '$fecha' AND hora = '$hora' AND dni_paciente = '$dni_paciente'";
-    $result = mysqli_query($conexion, $query);
+        // Verificar si la fecha seleccionada es un sábado o domingo
+        $fecha_seleccionada_dia_semana = date('N', strtotime($fecha_seleccionada));
+        if ($fecha_seleccionada_dia_semana >= 6) {
+            echo "<script>alert('No se pueden seleccionar los días sábados y domingos')</script>";
+            exit();
+        }
 
-    if(mysqli_num_rows($result) > 0) {
-        echo "<script>alert('Ya hay una cita agendada para esa hora y día')</script>";
-        exit();
-    } 
+        // Verificar si la fecha seleccionada es anterior a la fecha y hora actual
+        if (strtotime($fecha) < time()) {
+            echo "<script>alert('No se puede seleccionar una fecha y hora anterior a la actual')</script>";
+            exit();
+        }
 
-    // Verificar si los datos a insertar son iguales a los que ya existen en la base de datos
-    $query = "SELECT * FROM cita WHERE dni_paciente = '$dni_paciente' AND dni_doctor = '$dni_doctor' AND dia = '$fecha' AND hora = '$hora'";
-    $result = mysqli_query($conexion, $query);
+        // Verificar si hay una cita agendada para esa hora y día
+        $query = "SELECT * FROM cita WHERE dia = '$fecha' AND hora = '$hora'";
+        $result = mysqli_query($conexion, $query);
 
-    if(mysqli_num_rows($result) > 0) {
-        echo "<script>alert('Ya existe una cita con los mismos datos')</script>";
-        exit();
-    } 
+        if (mysqli_num_rows($result) > 0) {
+            echo "<script>alert('La hora seleccionada ya está ocupada. Por favor, elija otra hora.')</script>";
+            exit();
+        }
+
+        // Verificar si hay una cita con la misma fecha y hora en la base de datos
+        $query = "SELECT * FROM cita WHERE dni_paciente = '$dni_paciente' AND dni_doctor = '$dni_doctor' AND dia = '$fecha' AND hora = '$hora'";
+        $result = mysqli_query($conexion, $query);
+
+        if (mysqli_num_rows($result) > 0) {
+            echo "<script>alert('Ya existe una cita con la misma fecha y hora')</script>";
+            exit();
+        }
+    }
 
     // Insertar la cita en la base de datos
     $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$fecha', '$hora')";
     mysqli_query($conexion, $query);
 
-    
     // Redirigir al usuario a la página paciente.php después de la inserción
     $url = 'paciente.php';
     header("Location: $url");
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" type="text/css" href="CSS/pacientecss.css">
@@ -74,23 +86,25 @@ if(isset($_POST['fecha_seleccionada'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horario</title>
 </head>
+
 <body>
     <h1>Elige la hora a la que desea la consulta</h1>
 
     <div class="cita">
         <form method="post" name="cita-form" action="">
-        <label for="fecha_seleccionada">Seleccione la fecha de la cita:</label>
-        <input type="date" id="fecha_seleccionada" name="fecha_seleccionada" min="<?php echo date('Y-m-d'); ?>" onchange="checkDate()">  
+            <label for="fecha_seleccionada">Seleccione la fecha de la cita:</label>
+            <input type="date" id="fecha_seleccionada" name="fecha_seleccionada" min="<?php echo date('Y-m-d'); ?>"
+                onchange="checkDate()">
 
             <table>
                 <thead>
-                <tr>
-                    <th>Hora</th>
-                    <th>Dia</th>
-                </tr>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Día</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php
+                    <?php
                     $hora_inicio = strtotime('08:00:00');
                     $hora_fin = strtotime('13:30:00');
 
@@ -103,23 +117,20 @@ if(isset($_POST['fecha_seleccionada'])) {
 
                         echo "<tr>";
                         echo "<td>$hora</td>";
-                        echo "<td><input type='checkbox' name='horario[]' value='$hora|$dia'></td>";       
+                        echo "<td><input type='checkbox' name='horario[]' value='$hora|$dia'></td>";
 
                         echo "</tr>";
 
                         $hora_inicio += $intervalo;
                     }
-                ?>
+                    ?>
                 </tbody>
             </table>
             <input type="hidden" name="hora_seleccionada" id="hora_seleccionada" value="">
             <button id="submit-btn" type="button" onclick="updateDate()">Guardar cita</button>
         </form>
     </div>
-    <!--
-        <p>Fecha seleccionada: <span id="fecha-imprimir"></span></p>
-        <p>Hora seleccionada: <span id="hora-imprimir"></span></p>
-    -->
+
     <script>
         // Script para que solo se pueda tener activo un checkbox a la vez
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
