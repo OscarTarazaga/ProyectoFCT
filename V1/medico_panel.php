@@ -42,7 +42,7 @@ if (isset($_POST['guardar'], $_POST['receta'], $_SESSION['dni_doctor'])) {
     $fecha_actual = date("Y-m-d");
 
     // Utilizar sentencias preparadas
-    $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, '$receta', ?, ?)";
     $statement = mysqli_prepare($conexion, $query);
     mysqli_stmt_bind_param($statement, "ssss", $fecha_actual, $receta, $dni_paciente, $dni_doctor);
     mysqli_stmt_execute($statement);
