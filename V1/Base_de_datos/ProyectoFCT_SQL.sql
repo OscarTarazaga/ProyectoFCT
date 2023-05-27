@@ -70,7 +70,7 @@ CREATE TABLE receta (
 /*Añado el campo id_receta y fecha_receta*/
   id_receta INT AUTO_INCREMENT PRIMARY KEY,
   fecha_receta date,
-  comentario VARCHAR(200),
+  comentario VARCHAR(700),
   dni_paciente VARCHAR(9),
   dni_doctor VARCHAR(9),
   FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
@@ -78,7 +78,7 @@ CREATE TABLE receta (
 );
 select * from receta;
 /*Inserción de receta*/
-delete from receta where id_receta = 2;
+
 INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor)
 VALUES ('2023-04-28', 'Tomar una pastilla de ibuprofeno cada 12 horas', '123456789', '987654321');
 
@@ -160,13 +160,16 @@ Select * from doctores;
 Select * from cita;
 Select * from tickets;
 Select * from receta;
+
 describe tickets;
+describe receta;
 
 update pacientes set apellidos="Pérez Ureña" where dni="123456789";
 
 delete from doctores where id = 2;
-delete from cita where id_cita = 55;
+delete from cita where id_cita = 68;
 delete from tickets where id_ticket = 3;
+delete from receta where id_receta = 9;
 
 /*Asignación de paciente a un doctor*/
 ALTER TABLE pacientes ADD dni_doctor VARCHAR(9);

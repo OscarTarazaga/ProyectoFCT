@@ -35,42 +35,51 @@ if (!empty($dni_paciente)) {
     }
 }
 
-if (isset($_POST['guardar'], $_POST['receta'], $_POST['dni_doctor'])) {
+if (isset($_POST['guardar'], $_POST['receta'], $dni_doctor)) {
     $receta = $_POST['receta'];
-    $dni_doctor = $_POST['dni_doctor'];
 
-    // Verificar si el DNI del doctor existe en la tabla "doctores"
-    $query = "SELECT * FROM doctores WHERE dni = '$dni_doctor'";
-    $result = mysqli_query($conexion, $query);
+    $fecha_actual = date("Y-m-d");
 
-    if (mysqli_num_rows($result) > 0) {
-        $fecha_actual = date("Y-m-d");
+    $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, ?, ?, ?)";
+    $statement = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($statement, "ssss", $fecha_actual, $receta, $dni_paciente, $dni_doctor);
+    mysqli_stmt_execute($statement);
 
-        $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, ?, ?, ?)";
-        $statement = mysqli_prepare($conexion, $query);
-        mysqli_stmt_bind_param($statement, "ssss", $fecha_actual, $receta, $dni_paciente, $dni_doctor);
-        mysqli_stmt_execute($statement);
+    mysqli_stmt_close($statement); // Cerrar la sentencia preparada
 
-        mysqli_stmt_close($statement); // Cerrar la sentencia preparada
-
-        header("Location: medico.php");
-        exit();
-    } else {
-        echo "No se encontró ningún doctor con el DNI $dni_doctor.";
-    }
+    header("Location: medico.php");
+    exit();
 }
 
 mysqli_close($conexion);
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="CSS/panel_css.css">
+    <style>
+        div.aizqui {
+            height: 37%;
+        }
+
+        div.bizqui {
+            bottom: 50px;
+            height: 40%;
+        }
+
+        .volver-btn {
+            position: absolute;
+            bottom: 0;
+            margin-bottom: 20px;
+        }
+    </style>
     <title>Panel de control del médico</title>
 </head>
+
 <body>
     <div class="aizqui">
         <h4> Información del paciente (Datos personales)</h4>
@@ -86,22 +95,14 @@ mysqli_close($conexion);
     </div>
 
     <div class="derecha">
-        <h2>Inserción en la tabla Receta</h2>
-        <form method="post" action="medico_panel.php">
-            <label for="fecha_receta">Fecha de la receta:</label>
-            <input type="date" name="fecha_receta" required><br><br>
-            
-            <input type="hidden" name="dni_paciente" value="<?php echo $dni_paciente; ?>">
-
-            <label for="receta">Receta:</label>
-            <textarea name="receta" rows="25" cols="90" required></textarea><br><br>
-
-            <label for="dni_doctor">DNI del Doctor:</label>
-            <input type="text" name="dni_doctor" required><br><br>
-
-            <input type="submit" name="guardar" value="Insertar Receta">
+        <h4> Receta (Receta y/o recomendaciones para el paciente)</h4>
+        <form action="medico.php" method="post">
+            <input type="hidden" name="dni_doctor" value="<?php echo $dni_doctor; ?>">
+            <textarea name="receta" rows="35" cols="91"></textarea>
+            <br>
+            <input type="hidden" name="guardar" value="1">
+            <input type="submit" value="Guardar">
         </form>
-
         <form action="medico.php" class="volver-btn" method="post">
             <input type="submit" value="Volver a la selección">
         </form>

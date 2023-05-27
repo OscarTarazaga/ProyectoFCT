@@ -41,6 +41,3 @@ BEGIN
 END //
 
 DELIMITER ;
-
-/*DELIMITER //
-drop trigger tr_insertar_paciente;*/

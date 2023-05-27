@@ -7,27 +7,15 @@ body {
 
 div.aizqui {
     position: absolute;
-    top: 15px;
-    left: 10px;
+    top: 200px;
+    left: 180px;
     border: 2px solid black;
     border-radius: 10px;
     padding: 20px;
-    height: 35%;
+    bottom: 50px;
+    height: 40%;
     background-image: linear-gradient(to bottom, #89CFF0, #9EAFF0);
   }
-  
-
-div.bizqui {
-    position: absolute;
-    bottom: 15px;
-    left: 10px;
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 20px;
-    height: 30%;
-    background-image: linear-gradient(to top, #89CFF0, #F0A189);
-}
-  
 
 div.derecha {
     position: absolute;
@@ -41,3 +29,8 @@ div.derecha {
     background-image: linear-gradient(to right, #89CFF0, #B189F0);
   }
   
+  .volver-btn {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+}
