@@ -103,6 +103,7 @@ FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni)
 );
 
 /*Es inutil puesto que ya tenemos una talba cita*/
+/*
 -- Crear tabla de horarios
 CREATE TABLE horarios (
   dni VARCHAR(9) PRIMARY KEY,
@@ -112,6 +113,7 @@ CREATE TABLE horarios (
   FOREIGN KEY (dni_paciente) REFERENCES pacientes(dni),
   FOREIGN KEY (dni_doctor) REFERENCES doctores(dni)
 );
+*/
 
 /*Insercion de datos:*/
 /*Paciente*/
@@ -160,6 +162,7 @@ Select * from doctores;
 Select * from cita;
 Select * from tickets;
 Select * from receta;
+select * from horarios;
 
 describe tickets;
 describe receta;
