@@ -162,7 +162,8 @@ Select * from doctores;
 Select * from cita;
 Select * from tickets;
 Select * from receta;
-select * from horarios;
+
+Delete from cita where id_cita=65;
 
 describe tickets;
 describe receta;

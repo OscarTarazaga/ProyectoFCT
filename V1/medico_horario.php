@@ -45,8 +45,8 @@ if (mysqli_num_rows($result) == 1) {
 
 // Consultamos las citas asignadas al médico para la semana actual
 $fecha_actual = date("Y-m-d");
-$fecha_inicio_semana = date("Y-m-d", strtotime("last Monday", strtotime($fecha_actual)));
-$fecha_fin_semana = date("Y-m-d", strtotime("next Friday", strtotime($fecha_actual)));
+$fecha_inicio_semana = date("Y-m-d", strtotime("monday this week", strtotime($fecha_actual)));
+$fecha_fin_semana = date("Y-m-d", strtotime("friday this week", strtotime($fecha_actual)));
 $query_citas = "SELECT cita.hora, cita.dia, pacientes.nombre, pacientes.apellidos FROM cita 
                 INNER JOIN pacientes ON cita.dni_paciente = pacientes.dni
                 WHERE cita.dni_doctor='$dni' AND cita.dia BETWEEN '$fecha_inicio_semana' AND '$fecha_fin_semana'";
