@@ -130,7 +130,9 @@ if (isset($_POST['fecha_seleccionada'])) {
             <button id="submit-btn" type="button" onclick="updateDate()">Guardar cita</button>
         </form>
     </div>
-
+    <form action="paciente.php" class="volver-btn" method="post">
+        <input type="submit" value="Volver a la selección">
+    </form>
     <script>
         // Script para que solo se pueda tener activo un checkbox a la vez
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');

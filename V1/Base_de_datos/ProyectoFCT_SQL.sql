@@ -164,6 +164,7 @@ Select * from tickets;
 Select * from receta;
 
 Delete from cita where id_cita=65;
+Delete from receta where id_receta=10;
 
 describe tickets;
 describe receta;
