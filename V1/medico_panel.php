@@ -93,7 +93,7 @@ mysqli_close($conexion);
             
             <input type="hidden" name="dni_paciente" value="<?php echo $dni_paciente; ?>">
 
-            <label for="receta">Receta:</label>
+            <label for="receta">Receta:</label><br>
             <textarea name="receta" rows="25" cols="90" required></textarea><br><br>
 
             <label for="dni_doctor">DNI del Doctor:</label>
