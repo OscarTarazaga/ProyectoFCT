@@ -36,13 +36,37 @@ if (isset($_POST['fecha_seleccionada'])) {
         // Verificar si la fecha seleccionada es un sábado o domingo
         $fecha_seleccionada_dia_semana = date('N', strtotime($fecha_seleccionada));
         if ($fecha_seleccionada_dia_semana >= 6) {
-            echo "<script>alert('No se pueden seleccionar los días sábados y domingos')</script>";
+            // Almacena el mensaje en una variable
+            $mensaje = "No se pueden seleccionar los días sábados y domingos";
+
+            // Muestra el mensaje
+            echo "<script>alert('$mensaje')</script>";
+            flush(); // Envía el buffer de salida al navegador
+
+                // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+                echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'paciente_citamedica.php';
+                }, 100);
+            </script>";
             exit();
         }
 
         // Verificar si la fecha seleccionada es anterior a la fecha y hora actual
         if (strtotime($fecha) < time()) {
-            echo "<script>alert('No se puede seleccionar una fecha y hora anterior a la actual')</script>";
+            // Almacena el mensaje en una variable
+            $mensaje = "No se puede seleccionar una fecha y hora anterior a la actual";
+
+            // Muestra el mensaje
+            echo "<script>alert('$mensaje')</script>";
+            flush(); // Envía el buffer de salida al navegador
+
+            // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+            echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'paciente_citamedica.php';
+                }, 100);
+            </script>";
             exit();
         }
 
