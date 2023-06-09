@@ -26,39 +26,66 @@ if (isset($_POST['fecha_seleccionada'])) {
         exit();
     }
 
+    // Obtener todos los horarios seleccionados
+    $horas_dias = array();
     foreach ($horarios as $horario) {
         $hora_dia = explode("|", $horario);
         $hora = $hora_dia[0];
         $dia = $hora_dia[1];
+        $horas_dias[] = array('hora' => $hora, 'dia' => $dia);
+    }
+
+    // Verificar si la fecha seleccionada es un sábado o domingo
+    $fecha_seleccionada_dia_semana = date('N', strtotime($fecha_seleccionada));
+    if ($fecha_seleccionada_dia_semana >= 6) {
+        // Almacena el mensaje en una variable
+        $mensaje = "No se pueden seleccionar los días sábados y domingos";
+
+        // Muestra el mensaje
+        echo "<script>alert('$mensaje')</script>";
+        flush(); // Envía el buffer de salida al navegador
+
+        // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+        echo "<script>
+            setTimeout(function() {
+                window.location.href = 'paciente_citamedica.php';
+            }, 100);
+        </script>";
+        exit();
+    }
+
+    // Verificar si la fecha seleccionada es anterior a la fecha y hora actual
+    $fecha_actual = date('Y-m-d H:i:s');
+    $fecha_seleccionada_hora_minima = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada {$horas_dias[0]['hora']}"));
+    if ($fecha_seleccionada_hora_minima < $fecha_actual) {
+        // Almacena el mensaje en una variable
+        $mensaje = "No se puede seleccionar una fecha y hora anterior a la actual";
+
+        // Muestra el mensaje
+        echo "<script>alert('$mensaje')</script>";
+        flush(); // Envía el buffer de salida al navegador
+
+        // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+        echo "<script>
+            setTimeout(function() {
+                window.location.href = 'paciente_citamedica.php';
+            }, 100);
+        </script>";
+        exit();
+    }
+
+    // Verificar si hay una cita agendada para alguna de las horas y días seleccionados
+    foreach ($horas_dias as $horas_dia) {
+        $hora = $horas_dia['hora'];
+        $dia = $horas_dia['dia'];
 
         $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
 
-        // Verificar si la fecha seleccionada es un sábado o domingo
-        $fecha_seleccionada_dia_semana = date('N', strtotime($fecha_seleccionada));
-        if ($fecha_seleccionada_dia_semana >= 6) {
-            // Almacena el mensaje en una variable
-            $mensaje = "No se pueden seleccionar los días sábados y domingos";
+        $query = "SELECT * FROM cita WHERE dni_doctor = '$dni_doctor' AND dia = '$dia' AND hora = '$hora'";
+        $result = mysqli_query($conexion, $query);
 
-            // Muestra el mensaje
-            echo "<script>alert('$mensaje')</script>";
-            flush(); // Envía el buffer de salida al navegador
-
-                // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
-                echo "<script>
-                setTimeout(function() {
-                    window.location.href = 'paciente_citamedica.php';
-                }, 100);
-            </script>";
-            exit();
-        }
-
-        // Verificar si la fecha seleccionada es anterior a la fecha y hora actual
-        if (strtotime($fecha) < time()) {
-            // Almacena el mensaje en una variable
-            $mensaje = "No se puede seleccionar una fecha y hora anterior a la actual";
-
-            // Muestra el mensaje
-            echo "<script>alert('$mensaje')</script>";
+        if (mysqli_num_rows($result) > 0) {
+            echo "<script>alert('La hora seleccionada ya está ocupada. Por favor, elija otra hora.')</script>";
             flush(); // Envía el buffer de salida al navegador
 
             // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
@@ -68,30 +95,19 @@ if (isset($_POST['fecha_seleccionada'])) {
                 }, 100);
             </script>";
             exit();
-        }
-
-        // Verificar si hay una cita agendada para esa hora y día
-        $query = "SELECT * FROM cita WHERE dia = '$fecha' AND hora = '$hora'";
-        $result = mysqli_query($conexion, $query);
-
-        if (mysqli_num_rows($result) > 0) {
-            echo "<script>alert('La hora seleccionada ya está ocupada. Por favor, elija otra hora.')</script>";
-            exit();
-        }
-
-        // Verificar si hay una cita con la misma fecha y hora en la base de datos
-        $query = "SELECT * FROM cita WHERE dni_paciente = '$dni_paciente' AND dni_doctor = '$dni_doctor' AND dia = '$fecha' AND hora = '$hora'";
-        $result = mysqli_query($conexion, $query);
-
-        if (mysqli_num_rows($result) > 0) {
-            echo "<script>alert('Ya existe una cita con la misma fecha y hora')</script>";
-            exit();
-        }
+        }        
     }
 
     // Insertar la cita en la base de datos
-    $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$fecha', '$hora')";
-    mysqli_query($conexion, $query);
+    foreach ($horas_dias as $horas_dia) {
+        $hora = $horas_dia['hora'];
+        $dia = $horas_dia['dia'];
+
+        $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
+
+        $query = "INSERT INTO cita (dni_paciente, dni_doctor, dia, hora) VALUES ('$dni_paciente', '$dni_doctor', '$fecha', '$hora')";
+        mysqli_query($conexion, $query);
+    }
 
     // Redirigir al usuario a la página paciente.php después de la inserción
     $url = 'paciente.php';

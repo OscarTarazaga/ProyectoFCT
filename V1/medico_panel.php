@@ -40,7 +40,8 @@ if (isset($_POST['guardar'], $_POST['receta'], $_POST['dni_doctor'])) {
     $dni_doctor = $_POST['dni_doctor'];
 
     // Verificar si el DNI del doctor existe en la tabla "doctores"
-    $query = "SELECT * FROM doctores WHERE dni = '$dni_doctor'";
+    $query = "SELECT * FROM doctores WHERE dni = '".trim($dni_doctor)."'";
+    print $query;
     $result = mysqli_query($conexion, $query);
 
     if (mysqli_num_rows($result) > 0) {
@@ -81,7 +82,7 @@ mysqli_close($conexion);
             <p>Edad: <?php echo $edad_paciente; ?> años</p>
             <p>Dirección: <?php echo $direccion_paciente; ?></p>
             <p>Teléfono: <?php echo $telefono_paciente; ?></p>
-            <p>DNI del doctor: <?php echo $dni_doctor; ?> </p>
+            <!--<p>DNI del doctor: <?php echo $dni_doctor; ?> </p>-->
         <?php } ?>
     </div>
 
@@ -96,8 +97,8 @@ mysqli_close($conexion);
             <label for="receta">Receta:</label><br>
             <textarea name="receta" rows="25" cols="90" required></textarea><br><br>
 
-            <label for="dni_doctor">DNI del Doctor:</label>
-            <input type="text" name="dni_doctor" required><br><br>
+            <label for="dni_doctor">DNI del Doctor:  <?php echo $dni_doctor; ?></label>
+            <input type="hidden" name="dni_doctor" value="<?php echo $dni_doctor; ?>"><br><br>
 
             <input type="submit" name="guardar" value="Insertar Receta">
         </form>
