@@ -81,7 +81,7 @@ foreach ($horas_dias as $horas_dia) {
 
     $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
 
-    $query = "SELECT * FROM cita WHERE dni_doctor = '$dni_doctor' AND dia = '$dia' AND hora = '$hora'";
+    $query = "SELECT * FROM cita WHERE dni_doctor = '$dni_doctor' AND dia = '$fecha_seleccionada' AND hora = '$hora'";
     $result = mysqli_query($conexion, $query);
 
     if (mysqli_num_rows($result) > 0) {
