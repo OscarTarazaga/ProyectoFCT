@@ -72,10 +72,6 @@ mysqli_close($conexion);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="CSS/medicocss.css">
     <title>Horario</title>
-    <!--<Aquí he definido el estilo de estos elementos ya que no me dejaba hacerlo desde el css que hay desde un inicio auqnque si aplica los cambios al reste de 
-elementos asociados al css.
-En este caso, he definido que el titulo salga en el centro del div, y el formato de la tabla, para que salga dentro de celdas, excepto la primera celda de todas, ya que esta 
-aparece sin borde alguno>-->
 </head>
 <body>
     <div>

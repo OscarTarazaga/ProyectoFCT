@@ -74,29 +74,29 @@ if (isset($_POST['fecha_seleccionada'])) {
         exit();
     }
 
-    // Verificar si hay una cita agendada para alguna de las horas y días seleccionados
-    foreach ($horas_dias as $horas_dia) {
-        $hora = $horas_dia['hora'];
-        $dia = $horas_dia['dia'];
+// Verificar si hay una cita agendada para alguna de las horas y días seleccionados
+foreach ($horas_dias as $horas_dia) {
+    $hora = $horas_dia['hora'];
+    $dia = $horas_dia['dia'];
 
-        $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
+    $fecha = date('Y-m-d H:i:s', strtotime("$fecha_seleccionada $hora"));
 
-        $query = "SELECT * FROM cita WHERE dni_doctor = '$dni_doctor' AND dia = '$dia' AND hora = '$hora'";
-        $result = mysqli_query($conexion, $query);
+    $query = "SELECT * FROM cita WHERE dni_doctor = '$dni_doctor' AND dia = '$dia' AND hora = '$hora'";
+    $result = mysqli_query($conexion, $query);
 
-        if (mysqli_num_rows($result) > 0) {
-            echo "<script>alert('La hora seleccionada ya está ocupada. Por favor, elija otra hora.')</script>";
-            flush(); // Envía el buffer de salida al navegador
+    if (mysqli_num_rows($result) > 0) {
+        echo "<script>alert('La hora seleccionada ya está ocupada. Por favor, elija otra hora.')</script>";
+        flush(); // Envía el buffer de salida al navegador
 
-            // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
-            echo "<script>
-                setTimeout(function() {
-                    window.location.href = 'paciente_citamedica.php';
-                }, 100);
-            </script>";
-            exit();
-        }        
-    }
+        // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+        echo "<script>
+            setTimeout(function() {
+                window.location.href = 'paciente_citamedica.php';
+            }, 100);
+        </script>";
+        exit();
+    }        
+}
 
     // Insertar la cita en la base de datos
     foreach ($horas_dias as $horas_dia) {
@@ -122,6 +122,7 @@ if (isset($_POST['fecha_seleccionada'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" type="text/css" href="CSS/pacientecss.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Js/paciente.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horario</title>
@@ -131,7 +132,7 @@ if (isset($_POST['fecha_seleccionada'])) {
     <h1>Elige la hora a la que desea la consulta</h1>
 
     <div class="cita">
-        <form method="post" name="cita-form" action="">
+    <form method="post" name="cita-form" action="paciente_citamedica.php">
             <label for="fecha_seleccionada">Seleccione la fecha de la cita:</label>
             <input type="date" id="fecha_seleccionada" name="fecha_seleccionada" min="<?php echo date('Y-m-d'); ?>"
                 onchange="checkDate()">
