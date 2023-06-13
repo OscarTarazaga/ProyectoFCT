@@ -1,3 +1,5 @@
+<script src="ajax.js"></script>
+
 <?php
 session_start();
 
@@ -10,10 +12,10 @@ $dbname = "proyectofct";
 $conexion = mysqli_connect($host, $user, $password, $dbname, $port);
 
 // Obtener la fecha seleccionada del parámetro POST
-$fechaSeleccionada = $_POST['fechaSeleccionada'];
+$fechaSeleccionada = $_POST['fecha_seleccionada'];
 
 // Consultar la base de datos para obtener los horarios ocupados
-$query = "SELECT hora, dia FROM cita WHERE dia = '$fechaSeleccionada'";
+$query = "SELECT hora, dia FROM cita WHERE dia = '$fecha_seleccionada'";
 $result = mysqli_query($conexion, $query);
 
 $horariosOcupados = array();

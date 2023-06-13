@@ -22,7 +22,15 @@ if (isset($_POST['fecha_seleccionada'])) {
 
     // Verificar que se ha seleccionado una fecha y hora
     if (empty($fecha_seleccionada) || empty($horarios)) {
-        echo "<script>alert('Debe seleccionar una fecha y una hora')</script>";
+        echo "<script>alert('Debe seleccionar una fecha y una hora')</script>";        
+        flush(); // Envía el buffer de salida al navegador
+
+        // Espera 1 segundo y redirige mediante JavaScript después de mostrar el mensaje
+        echo "<script>
+            setTimeout(function() {
+                window.location.href = 'paciente_citamedica.php';
+            }, 100);
+        </script>";
         exit();
     }
 
@@ -123,6 +131,8 @@ foreach ($horas_dias as $horas_dia) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" type="text/css" href="CSS/pacientecss.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-3.7.0.min.js"></script>
+    <script src="ajax.js"></script>
     <script src="Js/paciente.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horario</title>
@@ -189,6 +199,7 @@ foreach ($horas_dias as $horas_dia) {
                 submitBtn.disabled = false;
             });
         });
+    
     </script>
 </body>
 </html>

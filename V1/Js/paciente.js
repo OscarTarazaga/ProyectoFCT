@@ -50,7 +50,7 @@ $(document).ready(function() {
     
     // Enviar una solicitud AJAX al servidor
     $.ajax({
-      url: 'procesar_fecha.php',
+      url: 'V1/procesar_fecha.php',
       type: 'POST',
       data: { fechaSeleccionada: fechaSeleccionada },
       success: function(response) {
