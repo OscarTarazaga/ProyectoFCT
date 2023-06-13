@@ -60,10 +60,7 @@ if(isset($_POST['opcion']) && $_POST['opcion'] == 'horario') {
         header('Location: /V1/medico.php');
     }
 }
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
