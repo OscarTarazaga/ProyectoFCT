@@ -44,10 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar"])) {
         $dni_doctor = $_POST["dni_doctor"];
 
         // Preparar la consulta SQL para verificar si ya existe un paciente con ese DNI
-        $consulta = "SELECT dni FROM pacientes WHERE dni = '$dni_paciente'";
+        $consulta = "SELECT dni FROM pacientes WHERE dni = ?";
+
+        // Preparar el statement
+        $stmt = mysqli_prepare($conexion, $consulta);
+
+        // Vincular el parámetro
+        mysqli_stmt_bind_param($stmt, "s", $dni_paciente);
 
         // Ejecutar la consulta SQL
-        $resultado = mysqli_query($conexion, $consulta);
+        mysqli_stmt_execute($stmt);
+
+        // Obtener el resultado de la consulta
+        $resultado = mysqli_stmt_get_result($stmt);
 
         // Verificar si ya existe un paciente con ese DNI
         if (mysqli_num_rows($resultado) > 0) {
@@ -55,15 +64,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar"])) {
         } else {
             // Preparar la consulta SQL para insertar los datos en la tabla pacientes
             $consulta = "INSERT INTO pacientes (dni, id, nombre, apellidos, genero, edad, direccion, telefono, passwd, dni_doctor) 
-            VALUES ('$dni_paciente', $id,'$nombre_paciente', '$apellidos_paciente', '$genero_paciente', $edad, '$direccion', '$telefono', '$contraseña', '$dni_doctor')";
-            
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            // Preparar el statement
+            $stmt = mysqli_prepare($conexion, $consulta);
+
+            // Vincular los parámetros
+            mysqli_stmt_bind_param($stmt, "sisssissss", $dni_paciente, $id, $nombre_paciente, $apellidos_paciente, $genero_paciente, $edad, $direccion, $telefono, $contraseña, $dni_doctor);
 
             // Ejecutar la consulta SQL
-            if (mysqli_query($conexion, $consulta)) {
+            mysqli_stmt_execute($stmt);
+
+            // Verificar si la inserción fue exitosa
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
                 echo "<script>alert('Registro insertado correctamente.')</script>";
             } else {
                 echo "Error al insertar el registro: " . mysqli_error($conexion);
             }
+
+            // Cerrar el statement
+            mysqli_stmt_close($stmt);
 
             // Cerrar la conexión a la base de datos
             mysqli_close($conexion);

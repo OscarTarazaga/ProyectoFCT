@@ -132,8 +132,8 @@ foreach ($horas_dias as $horas_dia) {
     <link rel="stylesheet" type="text/css" href="CSS/pacientecss.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="jquery-3.7.0.min.js"></script>
-    <script src="ajax.js"></script>
     <script src="Js/paciente.js"></script>
+    <script src="pacientes_js.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horario</title>
 </head>

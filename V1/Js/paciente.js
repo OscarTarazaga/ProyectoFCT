@@ -50,17 +50,18 @@ $(document).ready(function() {
     
     // Enviar una solicitud AJAX al servidor
     $.ajax({
-      url: 'V1/procesar_fecha.php',
+      url: 'procesar_fecha.php',
       type: 'POST',
-      data: { fechaSeleccionada: fechaSeleccionada },
+      data: { fecha_seleccionada: fechaSeleccionada },
       success: function(response) {
         // Deshabilitar los checkboxes según la respuesta del servidor
         var horariosOcupados = JSON.parse(response);
         $('input[type="checkbox"]').each(function() {
           var horaDia = $(this).val().split('|');
-          var hora = horaDia[0];
-          var dia = horaDia[1];
-          
+          var hora = horaDia[0]+":00";
+          //var dia = horaDia[1];
+          var dia = document.getElementById("fecha_seleccionada").value;
+
           if (horariosOcupados.hasOwnProperty(dia) && horariosOcupados[dia].includes(hora)) {
             $(this).prop('disabled', true);
           } else {

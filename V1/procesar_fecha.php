@@ -1,5 +1,3 @@
-<script src="ajax.js"></script>
-
 <?php
 session_start();
 
