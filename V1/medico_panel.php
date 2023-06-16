@@ -45,7 +45,7 @@ if (isset($_POST['guardar'], $_POST['receta'], $_POST['dni_doctor'])) {
     $result = mysqli_query($conexion, $query);
 
     if (mysqli_num_rows($result) > 0) {
-        $fecha_actual = date("Y-m-d");
+        $fecha_actual = isset($_POST['fecha_receta']) ? $_POST['fecha_receta'] : null;
 
         $query = "INSERT INTO receta (fecha_receta, comentario, dni_paciente, dni_doctor) VALUES (?, ?, ?, ?)";
         $statement = mysqli_prepare($conexion, $query);
